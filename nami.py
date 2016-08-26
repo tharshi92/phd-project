@@ -354,10 +354,10 @@ if __name__ == '__main__':
 	if not h_layers:
 		h_input = 0
 		h_layers = [25]
-		print(h_layers)
 	else:
 		h_layers = h_layers.split(',')
 		h_input = 1
+	print(h_layers)
 	act_fun = raw_input('Pick a activation function ("relu", "tanh", or "sigmoid"):\n')
 	if not act_fun:
 		act_fun = 'tanh'
@@ -388,10 +388,7 @@ if __name__ == '__main__':
 	Y = y
 	Yt = y_test
 
-	if not h_input:
-		h = h_layers
-	else:
-		h = [int(x) for x in h_layers.split(sep=',')]
+	h = [int(s) for s in h_layers]
 	layers = [len(X.T)] + h + [len(y.T)]
 	print(layers)	
 
