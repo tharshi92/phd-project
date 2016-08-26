@@ -14,7 +14,6 @@ program is not optimized for GPU usage. Classification is currently in progress.
 import numpy as np
 import scipy.optimize as spo
 import matplotlib.pyplot as plt
-from init_plotting import init_plotting
 
 class Network(object):
     
@@ -330,8 +329,13 @@ class Trainer(object):
 if __name__ == '__main__':
     
 	import matplotlib.pyplot as plt
-	width  = 7.784
+	from init_plotting import init_plotting
+	width  = 2.5*7.784
 	height = width / 1.618
+	saveplots = 0
+	
+	init_plotting()
+	plt.clf()
 
 	print('##############################################################')
 	print('Welcome to N.A.M.I.')
@@ -416,7 +420,8 @@ if __name__ == '__main__':
 	plt.legend()
 	f_reg.set_size_inches(width, height)
 	savename = 'nnReg.pdf'
-	plt.savefig(savename, bbox_inches='tight')        
+	if saveplots:
+		plt.savefig(savename, bbox_inches='tight')        
 
 	f_cost = plt.figure()
 	ax = plt.subplot(111)
@@ -430,7 +435,8 @@ if __name__ == '__main__':
 	plt.legend()
 	savename = 'costs.pdf'
 	f_cost.set_size_inches(width, height)
-	f_cost.savefig(savename, bbox_inches='tight')
+	if saveplots:
+		f_cost.savefig(savename, bbox_inches='tight')
 
 	plt.show()
 
