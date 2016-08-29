@@ -1,54 +1,32 @@
 # Import needed modules
 import numpy as np
 import matplotlib.pyplot as plt
-from nami import Network, Trainer
 from init_plotting import *
+from nami import Network
 
 def movingAverage(x, window):
     cumsum_vec = np.cumsum(np.insert(x, 0, 0)) 
     ma = (cumsum_vec[window:] - cumsum_vec[:-window]) / window
     return ma
-
-x = np.load('x.npy')
+    
 x_test = np.load('xt.npy')
-y = np.load('y.npy')
 y_test = np.load('yt.npy')
-scale_params = np.load('scale_params.npy')
 
-N = len(x)
-layers = [len(x.T), 8, len(y.T)]
-reg = 9e-3
-title_prefix = str(layers)
-method = 'BFGS'
-net = Network(layers, N, reg, io=True)
+# Network Parameters
+N = len(x_test)
+layers = [len(x_test.T), 8, 4, 2, len(y_test.T)]
+reg = 5e-3
 
-#%% Training
+# Create Network and Trainer Instances
+net = Network(layers, N, reg)
+wbs = np.load('weights.npy')
+net.set_params(wbs)
 
-trainer = Trainer(net)
-trainer.train(x, y, x_test, y_test, method=method)
-wbs = net.get_params()
-np.save('weights_{}'.format(layers), wbs)
+
+
 #%%
-plt.rcParams['text.usetex'] = True
-init_plotting()
-ax = plt.subplot(111)
-f_c = plt.gcf()
-plt.margins(0.0, 0.1)
-ax.set_xlabel('Iteration')
-ax.set_ylabel('Cost')
-ax.set_title('Training History, Layers = {}, Reg={:.4e}, Method = {}'.format(layers, reg, 'BFGS'))
-ax.loglog(trainer.J, label='Training')
-ax.loglog(trainer.J_test, label='Testing')
-plt.legend()
-savename = 'costsnnco.pdf'
-f_c.set_size_inches(width, height)
-plt.savefig(savename, bbox_inches='tight')
 
-#%% Fit on Test Data
-width  = 7.784
-height = width / 1.618
-
-window = 24*7
+window = 24*14
 
 yt = y_test
 zt = net.forward(x_test)
@@ -65,14 +43,9 @@ err = np.linalg.norm((zt - yt)**2)/len(yt)
 err_ma = np.linalg.norm((zt_ma - yt_ma)**2)/len(yt_ma)
 std = np.std(zt - yt, ddof=1)
 
-plt.rcParams['text.usetex'] = True
 init_plotting()
 ax = plt.subplot(111)
-f = plt.gcf()
 ylabel = 'CO Field (ppbv)'#, Smoothing Window = {} hrs'.format(window)
-title1 = 'Neural Network Fit, MSE = {:e}, $\sigma$ = {:e}'
-title2 = ', Layers: {}, Reg = {}'
-title = title1 + title2
 ax.set_xlabel('Days Since Jan 1st 2007')
 ax.set_ylabel(ylabel)
 reg = 1e-3
@@ -82,26 +55,18 @@ ax.plot(t, yt, label='testing data')
 ax.plot(t, zt, label='network estimate')
 ax.plot(t, r, label='residuals')
 plt.legend(loc='center left')
-f.set_size_inches(width, height)
-savename = 'nnfield_{}_{}_EXTRA'.format(window, layers) + method + '.pdf'
-plt.savefig(savename, bbox_inches='tight')
+plt.show()
 
-#%% Plot Residual Analysis
 
 iqr = np.subtract(*np.percentile(r, [75, 25]))
 h = 2*iqr*len(r)**(-1/3)
 b  = (r.max() - r.min())/h
 
+plt.clf()
 init_plotting()
 ax = plt.subplot(111)  
-f2 = plt.gcf()
-title1 = 'Residual Distribution, MSE = {:e}, $\sigma$ = {:e}'
-title2 = ', Layers: {}, Reg = {}'
-title = title1 + title2
+title = 'MSE = {:e}, $\sigma$ = {:e}'
 ax.set_xlabel('Residual')
 ax.set_ylabel('Frequency')
 ax.set_title(title.format(err, std, layers, reg))
-hist = plt.hist(r, bins=int(b))
-f2.set_size_inches(width, height)
-savename = 'residuals_{}_{}'.format(window, layers) + method + '.pdf'
-plt.savefig(savename, bbox_inches='tight')
+hist = plt.hist(r, bins=int(b), alpha=0.5)

@@ -12,12 +12,14 @@ y_test = np.load('yt.npy')
 
 # Network Parameters
 N = len(x)
-layers = [len(x.T), 8, len(y.T)]
-reg = 5e-5
+layers = [len(x.T), 8, 4, 2, len(y.T)]
+reg = 5e-3
 
 # Create Network and Trainer Instances
 net = Network(layers, N, reg, io=True)
 trainer = Trainer(net)
+
+#%%
 
 # Train Network
 trainer.train(x, y, x_test, y_test, method='BFGS')
@@ -25,6 +27,8 @@ trainer.train(x, y, x_test, y_test, method='BFGS')
 # Save Final Weights
 weights = net.get_params()
 np.save('weights', weights)
+
+#%%
 
 # Plot Training History
 init_plotting()

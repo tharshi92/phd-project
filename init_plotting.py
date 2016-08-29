@@ -29,7 +29,7 @@ def init_plotting():
     plt.rcParams['ytick.minor.width'] = 1
     plt.rcParams['legend.frameon'] = False
     plt.rcParams['legend.loc'] = 'upper left'
-    plt.rcParams['lines.linewidth'] = 1.5
+    plt.rcParams['lines.linewidth'] = 0.5
 
     plt.gca().spines['right'].set_color('none')
     plt.gca().spines['top'].set_color('none')
