@@ -16,8 +16,8 @@ time = np.arange(0, 24*365).reshape((24*365, 1))
 
 data = np.hstack((\
     time,\
-    np.load('trUWind.npy'),\
-    np.load('trVWind.npy'),\
+    np.load('trUwind.npy'),\
+    np.load('trVwind.npy'),\
     np.load('trPressure.npy'),\
     np.load('trTemperature.npy'),\
     np.load('trHumidity.npy'),\
@@ -26,8 +26,8 @@ data = np.hstack((\
     
 data_test = np.hstack((\
     time,\
-    np.load('teUWind.npy'),\
-    np.load('teVWind.npy'),\
+    np.load('teUwind.npy'),\
+    np.load('teVwind.npy'),\
     np.load('tePressure.npy'),\
     np.load('teTemperature.npy'),\
     np.load('teHumidity.npy'),\
@@ -62,3 +62,4 @@ np.save('data_test', data_test)
 np.save('target', target)
 np.save('target_test', target_test)
 np.save('scale_params', scale_params)
+print("Done.")
