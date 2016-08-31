@@ -9,7 +9,7 @@ y_test = np.load('yt.npy')
 
 # Network Parameters
 N = len(x_test)
-layers = [len(x_test.T), 8, len(y_test.T)]
+layers = [len(x_test.T), 25, len(y_test.T)]
 reg = 5e-3
 
 # Create Network and Trainer Instances
@@ -19,20 +19,19 @@ net.set_params(wbs)
 
 #%%
 
-
-
 y = y_test
 z = net.forward(x_test)
 r = z - y
 
-t = np.arange(0, len(yt))/24
+t = np.arange(0, len(y))/24
 
 err = np.linalg.norm(r**2)/len(r)
 std = np.std(r, ddof=1)
 
+f0 = plt.figure()
 init_plotting()
 ax = plt.subplot(111)
-ylabel = 'CO Field (ppbv)'#, Smoothing Window = {} hrs'.format(window)
+ylabel = 'CO Field (ppbv)'
 ax.set_xlabel('Days Since Jan 1st 2007')
 ax.set_ylabel(ylabel)
 reg = 1e-3
@@ -41,6 +40,7 @@ ax.plot(t, y, label='testing data')
 ax.plot(t, z, label='network estimate')
 ax.plot(t, r, label='residuals')
 plt.legend(loc='center left')
+f0.savefig('fit.pdf', bbox_inches='tight')
 plt.show()
 
 
@@ -48,7 +48,7 @@ iqr = np.subtract(*np.percentile(r, [75, 25]))
 h = 2*iqr*len(r)**(-1/3)
 b  = (r.max() - r.min())/h
 
-plt.clf()
+f = plt.figure()
 init_plotting()
 ax = plt.subplot(111)  
 title = 'MSE = {:e}, $\sigma$ = {:e}'
@@ -56,4 +56,5 @@ ax.set_xlabel('Residual')
 ax.set_ylabel('Frequency')
 ax.set_title(title.format(err, std, layers, reg))
 hist = plt.hist(r, bins=int(b), alpha=0.5)
+f.savefig('hist.pdf', bbox_inches='tight')
 plt.show()
