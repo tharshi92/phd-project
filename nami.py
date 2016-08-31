@@ -327,114 +327,83 @@ class Trainer(object):
         self.results = _res
             
 if __name__ == '__main__':
+     
+    N = 100
+    M = 100
+    h_layers = [25]
+    act_fun = 'tanh'
+    method = 'BFGS'
+    reg = 1e-3
+
+    import matplotlib.pyplot as plt
+    from init_plotting import init_plotting
+    width  = 2.5*7.784
+    height = width / 1.618
+    saveplots = 0
     
-	import matplotlib.pyplot as plt
-	from init_plotting import init_plotting
-	width  = 2.5*7.784
-	height = width / 1.618
-	saveplots = 0
-	
-	init_plotting()
-	plt.clf()
+    init_plotting()
+    plt.clf()
+    
+    x = np.random.uniform(low=-1, high=1, size=(int(N), 1))
+    x_test = np.random.uniform(low=-1, high=1, size=(int(M), 1))
+    
+    def f_reg(x):
+        return np.exp(-x**2)*np.sin(-np.pi*5*x)
+        
+    y = f_reg(x)
+    y += 0.05*np.random.randn(y.shape[0], y.shape[1])
+    y_test = f_reg(x_test)
+    y_test += 0.05*np.random.randn(y_test.shape[0], y_test.shape[1])
+    m = np.mean(x, axis=0)
+    s = np.std(x, axis=0, ddof=1)
+    X = (x - m)/s
+    Xt = (x_test - m)/s
+    Y = y
+    Yt = y_test
 
-	print('##############################################################')
-	print('Welcome to N.A.M.I.')
-	print('##############################################################')
-	N = raw_input('Enter the integer number of Training points to Generate:\n')
-	if not N:
-		N = int(1e2)
-	N = int(float(N))
-	M = raw_input('Enter the integer number of Testing points to Generate:\n')
-	if not M:
-		M = int(1e2)
-	M = int(float(M))
-	print('### Network Parameters ###')
-	h_layers = raw_input('Enter the number of neurons in each hidden layer' +  \
-	'as a list ie, h1,h2,...,hn:\n')
-	if not h_layers:
-		h_input = 0
-		h_layers = [25]
-	else:
-		h_layers = h_layers.split(',')
-		h_input = 1
-	print(h_layers)
-	act_fun = raw_input('Pick a activation function ("relu", "tanh", or "sigmoid"):\n')
-	if not act_fun:
-		act_fun = 'tanh'
-	print(act_fun + '.')
-	method = raw_input('Enter a training method ("BFGS", "CG", "L-BFGS-B"):\n')
-	if not method:
-		method = 'BFGS'
-	reg = raw_input('Amount of Regularization:\n')
-	if not reg:
-		reg = float(5e-4)
-	    
-		
-	x = np.random.uniform(low=-1, high=1, size=(int(N), 1))
-	x_test = np.random.uniform(low=-1, high=1, size=(int(M), 1))
-	def f_reg(x):
-		return np.exp(-x**2)*np.sin(-np.pi*5*x)
-		
-	y = f_reg(x)
-	y += 0.05*np.random.randn(y.shape[0], y.shape[1])
-	y_test = f_reg(x_test)
-	y_test += 0.05*np.random.randn(y_test.shape[0], y_test.shape[1])
+    layers = [len(X.T)] + [int(s) for s in h_layers] + [len(y.T)]
 
-	m = np.mean(x, axis=0)
-	s = np.std(x, axis=0, ddof=1)
+    net = Network(layers, int(N), reg=reg, activation=act_fun, io=1)
+    trainer = Trainer(net)
+    if method == 'L-BFGS-B':
+        bounds = (1, 10)
+    trainer.train(X, Y, Xt, Yt, method='BFGS')
+    
+    t = np.linspace(-1.01, 1.01, int(1e4)).reshape((int(1e4), 1))
+    nn = net.forward((t - m)/s)
+    mse = ((nn - f_reg(t))**2).mean(axis=0)
+    std = ((nn - f_reg(t))**2).std(axis=0, ddof=1)
+    
+    title = 'Neural Network Fit with MSE = {:.3e} and Residual $\sigma$={:.3e}'.format(mse[0], std[0])
 
-	X = (x - m)/s
-	Xt = (x_test - m)/s
-	Y = y
-	Yt = y_test
-
-	h = [int(s) for s in h_layers]
-	layers = [len(X.T)] + h + [len(y.T)]
-	print(layers)	
-
-	net = Network(layers, int(N), reg=reg, activation=act_fun, io=1)
-	trainer = Trainer(net)
-	if method == 'L-BFGS-B':
-		bounds = (1, 10)
-	trainer.train(X, Y, Xt, Yt, method='BFGS')
-
-	t = np.linspace(-1.01, 1.01, int(1e4)).reshape((int(1e4), 1))
-	nn = net.forward((t - m)/s)
-	mse = ((nn - f_reg(t))**2).mean(axis=0)
-	std = ((nn - f_reg(t))**2).std(axis=0, ddof=1)
-
-
-	title = 'Neural Network Fit with MSE = {:.3e} and Residual $\sigma$ = {:.3e}'.format(mse[0], std[0])
-
-	f_reg = plt.figure()
-	ax = plt.subplot(111)
-	ax.set_title(title)
-	ax.set_xlabel('x')
-	ax.set_ylabel('g(x)')
-	ax.scatter(x_test, y_test, s=50, marker='s', edgecolors='r',
+    f_reg = plt.figure()
+    ax = plt.subplot(111)
+    ax.set_title(title)
+    ax.set_xlabel('x')
+    ax.set_ylabel('g(x)')
+    ax.scatter(x_test, y_test, s=50, marker='s', edgecolors='r',
 				facecolors='none', label='Testing Data')
-	ax.plot(t, nn, color='k', label='Neural Net Estimate', linewidth = 1)
-	plt.legend()
-	f_reg.set_size_inches(width, height)
-	savename = 'nnReg.pdf'
-	if saveplots:
-		plt.savefig(savename, bbox_inches='tight')        
-
-	f_cost = plt.figure()
-	ax = plt.subplot(111)
-	title = 'Training History, Layers = {}, Reg={:.4e}, Method = {}'.format(layers, reg, method)
-	ax.set_title(title)
-	plt.xlabel('Iteration')
-	plt.ylabel('Cost')
-	plt.title(title)
-	plt.loglog(trainer.J, label='Training')
-	plt.loglog(trainer.J_test, label='Testing')
-	plt.legend()
-	savename = 'costs.pdf'
-	f_cost.set_size_inches(width, height)
-	if saveplots:
-		f_cost.savefig(savename, bbox_inches='tight')
-
-	plt.show()
+    ax.plot(t, nn, color='k', label='Neural Net Estimate', linewidth = 1)
+    plt.legend()
+    f_reg.set_size_inches(width, height)
+    savename = 'nnReg.pdf'
+    if saveplots:
+        plt.savefig(savename, bbox_inches='tight')
+        
+    f_cost = plt.figure()
+    ax = plt.subplot(111)
+    title = 'Training History, Layers = {}, Reg={:.4e}, Method = {}'.format(layers, reg, method)
+    ax.set_title(title)
+    plt.xlabel('Iteration')
+    plt.ylabel('Cost')
+    plt.title(title)
+    plt.loglog(trainer.J, label='Training')
+    plt.loglog(trainer.J_test, label='Testing')
+    plt.legend()
+    savename = 'costs.pdf'
+    f_cost.set_size_inches(width, height)
+    if saveplots:
+        f_cost.savefig(savename, bbox_inches='tight')
+    plt.show()
 
 

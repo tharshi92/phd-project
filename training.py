@@ -12,8 +12,8 @@ y_test = np.load('yt.npy')
 
 # Network Parameters
 N = len(x)
-layers = [len(x.T), 8, 4, 2, len(y.T)]
-reg = 5e-3
+layers = [len(x.T), 8, len(y.T)]
+reg = 9e-3
 
 # Create Network and Trainer Instances
 net = Network(layers, N, reg, io=True)
