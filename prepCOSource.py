@@ -10,9 +10,7 @@ ghost_file = 'tr' + title + '.npy'
 if os.path.isfile(ghost_file):
     print(ghost_file + ' already exists!!')
 
-print('-------------------------------------------------')
 print('Preparing ' + title + ' Data..')
-print('-------------------------------------------------\n')
 
 tr_f = Dataset(emDirs[0])
 te_f = Dataset(emDirs[1])
@@ -56,3 +54,4 @@ if plot:
 print('Writing data to file..\n')
 np.save('tr' + title, training_data)
 np.save('te' + title, testing_data) 
+print('done.')

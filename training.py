@@ -12,7 +12,7 @@ y_test = np.load('yt.npy')
 
 # Network Parameters
 N = len(x)
-layers = [len(x.T), 25, len(y.T)]
+layers = [len(x.T), 36, len(y.T)]
 reg = 9e-3
 
 # Create Network and Trainer Instances
@@ -26,7 +26,7 @@ trainer.train(x, y, x_test, y_test, method='BFGS')
 
 # Save Final Weights
 weights = net.get_params()
-np.save('weights', weights)
+np.save('weights_noPBLorHumidity', weights)
 
 #%%
 

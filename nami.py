@@ -275,11 +275,12 @@ class Trainer(object):
         self.net.set_params(params)
         self.J.append(self.net.cost(self.x, self.y))
         self.J_test.append(self.net.cost(self.x_t, self.y_t))
-        
+
     def callbackGA(self, params, convergence=0.1):
         self.net.set_params(params)
         self.J.append(self.net.cost(self.x, self.y))
         self.J_test.append(self.net.cost(self.x_t, self.y_t))
+    
         
     def train(self, x_train, y_train, x_test, y_test, \
         method='BFGS', \
