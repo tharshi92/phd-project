@@ -28,8 +28,8 @@ for metadata in metadatum:
                 tr_map = tr_f.variables[var_name][j, :, :]
                 te_map = te_f.variables[var_name][j, :, :]
             else:
-                tr_map = np.mean(tr_f.variables[var_name][j, :5, :, :], axis=0)
-                te_map = np.mean(te_f.variables[var_name][j, :5, :, :], axis=0)
+                tr_map = np.mean(tr_f.variables[var_name][j, :10, :, :], axis=0)
+                te_map = np.mean(te_f.variables[var_name][j, :10, :, :], axis=0)
                 
             tr_map = tr_map[latInitial:latFinal, lonInitial:lonFinal]
             tr_mean = np.mean(tr_map, dtype=np.float64)
@@ -57,9 +57,9 @@ for metadata in metadatum:
         plt.xlabel('Days since 010106')
         y_label = units
         plt.ylabel('Mean ' + units)
-        plt.savefig(title, extension='png', dpi=300)
-    
-    print('Writing data to file..\n')
+        if saveplot:
+            plt.savefig(title, extension='pdf')
+
     np.save('tr' + title, training_data)
     np.save('te' + title, testing_data)
     print('done.')
@@ -115,9 +115,9 @@ if plot:
     plt.xlabel('Days since 010106')
     y_label = units
     plt.ylabel('Mean ' + units)
-    plt.savefig(title, extension='png', dpi=300)
+    if saveplot:
+        plt.savefig(title, extension='png', dpi=300)
     
-print('Writing data to file..\n')
 np.save('tr' + title, training_data)
 np.save('te' + title, testing_data) 
 print('done.')

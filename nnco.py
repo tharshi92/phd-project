@@ -3,14 +3,14 @@ import numpy as np
 import matplotlib.pyplot as plt
 from init_plotting import *
 from nami import Network
+from config import nn, reg
     
 x_test = np.load('xt.npy')
 y_test = np.load('yt.npy')
 
 # Network Parameters
 N = len(x_test)
-layers = [len(x_test.T), 25, len(y_test.T)]
-reg = 5e-3
+layers = [len(x_test.T), nn, len(y_test.T)]
 
 # Create Network and Trainer Instances
 net = Network(layers, N, reg)

@@ -8,9 +8,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 import random
 
-print('-------------------------------------------------')
 print('Preparing Network Structure..')
-print('-------------------------------------------------\n')
 
 time = np.arange(0, 24*365).reshape((24*365, 1))
 
@@ -39,7 +37,9 @@ target_test = np.load('teCOField.npy').reshape((len(data_test), 1))
 
 mu_x = np.mean(data, axis=0)
 s_x = np.std(data, axis=0, ddof=1)
-scale_params = [mu_x, s_x]
+mu_y = np.mean(target, axis=0)
+s_y = np.std(target, axis=0)
+scale_params = [mu_x, s_x, mu_y]
 
 # shuffle x and y arrays
 

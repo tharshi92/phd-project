@@ -17,7 +17,7 @@ import matplotlib.pyplot as plt
 
 class Network(object):
     
-    def __init__(self, layers, N, reg=0, io=False, problem='regression', activation='tanh'):
+    def __init__(self, layers, N, reg=0, io=False):
         """Initializes the topology of the network and sets up random weights
         for each layer. Note that h_layers does not have to include the input
         and output layer.
@@ -38,8 +38,6 @@ class Network(object):
         self.num_layers = len(layers)
         self.N = N
         self.reg = reg
-        self.problem = problem
-        self.activation = activation
         # initialize weights and biases
         self.sizes = list(zip(self.layers[:-1], self.layers[1:]))
         self.weights = [np.random.normal(scale = np.sqrt(1.0/l), \
@@ -67,16 +65,6 @@ class Network(object):
             print('number of parameters (Ws + Bs): {0} + {1} = {2}'\
                 .format(self.num_weights, self.num_biases, self.num_params))
             print('------------------------------------------------\n')
-    
-    def info(self):
-        print('number of layers: {0}'.format(self.num_layers))
-        print('number of training examples: {0}'.format(self.N))
-        print('regularization parameter: {0}'.format(self.reg))
-        print('weight shapes: {0}'.format(self.weight_shapes))
-        print('bias shapes: {0}'.format(self.bias_shapes))
-        print('number of parameters (Ws + Bs): {0} + {1} = {2}'\
-            .format(self.num_weights, self.num_biases, self.num_params))
-        print('------------------------------------------------\n')
         
     def plot_weights(self, plot_type='image', init_label=0):
         w_idx = 2
@@ -105,21 +93,11 @@ class Network(object):
     
     def g(self, z):
         """Return nonlinear transformation to neuron output."""
-        if self.activation == 'tanh':
-            return 1.7159*np.tanh(2*z/3)
-        if self.activation == 'relu':
-            return np.log(1 + np.exp(z))
-        if self.activation == 'sigmoid':
-            return 1.0/(1 + np.exp(-z))
+        return 1.7159*np.tanh(2*z/3)
         
     def g_prime(self, z):
         """Return derivative of nonlinear activation function."""
-        if self.activation == 'tanh':
-            return 1.14393*(1 - np.tanh(2*z/3)**2)
-        if self.activation == 'relu':
-            return 1.0/(1 + np.exp(-z))
-        if self.activation == 'sigmoid':
-            return self.g(z)*(1 - self.g(z))
+        return 1.14393*(1 - np.tanh(2*z/3)**2)
         
     def h(self, z):
         """Return the output transformation."""
@@ -162,9 +140,9 @@ class Network(object):
         yhat = self.forward(x)
         diff = yhat - y
         ps = self.get_params()
-        J_0 = 0.5*np.linalg.norm(diff)**2/self.N
-        J_r = 0.5*self.reg*np.linalg.norm(ps[:self.num_weights])**2/self.num_weights
-        return J_0 + J_r
+        J_0 = np.linalg.norm(diff)**2
+        J_r = self.reg*np.linalg.norm(ps[:self.num_weights])**2
+        return 0.5*(J_0 + J_r)/self.N
     
     def cost_prime(self, x, y):
         """return the lists of derivatives dNet/dW and dNet/dB."""
@@ -173,7 +151,7 @@ class Network(object):
         diff = yhat - y
         delta = cnst*diff*self.h_prime(zs[-1])
         self.dws[-1] = (np.dot(acts[-1].T, delta) \
-                + (self.reg/self.num_weights)*self.weights[-1])
+                + (self.reg/self.N)*self.weights[-1])
         self.dbs[-1] = np.sum(delta, axis=0)
         w_previous = self.weights[-1]
         # loop backwards and calculate the rest of the derivatives !!!
@@ -184,7 +162,7 @@ class Network(object):
             a = acts[i - 1]
             delta = np.dot(delta, w_previous.T)*self.g_prime(z)
             self.dws[i - 1] = np.dot(a.T, delta) \
-                + (self.reg/self.num_weights)*w_current
+                + (self.reg/self.N)*w_current
             self.dbs[i - 1] = np.sum(delta, axis=0)
             w_previous = w_current
         return self.dws, self.dbs
@@ -331,10 +309,9 @@ if __name__ == '__main__':
      
     N = 100
     M = 100
-    h_layers = [25]
-    act_fun = 'tanh'
+    h_layers = [8]
     method = 'BFGS'
-    reg = 1e-3
+    reg = 1e-6
 
     import matplotlib.pyplot as plt
     from init_plotting import init_plotting
@@ -364,7 +341,7 @@ if __name__ == '__main__':
 
     layers = [len(X.T)] + [int(s) for s in h_layers] + [len(y.T)]
 
-    net = Network(layers, int(N), reg=reg, activation=act_fun, io=1)
+    net = Network(layers, int(N), reg, io=1)
     trainer = Trainer(net)
     if method == 'L-BFGS-B':
         bounds = (1, 10)

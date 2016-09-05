@@ -33,7 +33,7 @@ stringy = 'GEOS-Chem_CO_emiss_mass_NN_'
 emDirs = [dataDir + stringy + str(2006) + '.nc', dataDir + stringy + str(2007) + '.nc']
 
 plot = 1
-saveplots = 1
+saveplot = 1
 
 # control what data is let into the network
 
@@ -76,8 +76,8 @@ if field:
 
 # Below we describe the geometry of the box to analyze
 
-lonInitial = 21
-lonFinal = 22
+lonInitial = 20
+lonFinal = 21
 latInitial = 32
 latFinal = 33
 
@@ -90,3 +90,6 @@ testing_data = np.zeros((n, 1), dtype=np.float64)
 
 temp1 = np.arange(0, n)/24
 temp2 = np.arange(n, 2*n)/24
+
+reg = 1e-2
+nn = 5

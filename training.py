@@ -3,6 +3,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 from nami import Network, Trainer
 from init_plotting import *
+from config import nn, reg
 
 # Load Training/Testing Data
 x = np.load('x.npy')
@@ -12,8 +13,7 @@ y_test = np.load('yt.npy')
 
 # Network Parameters
 N = len(x)
-layers = [len(x.T), 36, len(y.T)]
-reg = 9e-3
+layers = [len(x.T), nn, len(y.T)]
 
 # Create Network and Trainer Instances
 net = Network(layers, N, reg, io=True)
@@ -26,7 +26,7 @@ trainer.train(x, y, x_test, y_test, method='BFGS')
 
 # Save Final Weights
 weights = net.get_params()
-np.save('weights_noPBLorHumidity', weights)
+np.save('weights', weights)
 
 #%%
 
