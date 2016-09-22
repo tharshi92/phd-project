@@ -1,0 +1,104 @@
+<class 'netCDF4._netCDF4.Dataset'>
+root group (NETCDF3_CLASSIC data model, file format NETCDF3):
+    Title: COARDS/netCDF file created by BPCH2COARDS (GAMAP v2-17+)
+    Model: GEOS5_47L
+    Delta_Lon: 5.0
+    Delta_Lat: 4.0
+    NLayers: 47
+    Start_Date: 20060111
+    Start_Time: 0
+    End_Date: 20060111
+    End_Time: 23
+    Delta_Time: 1
+    Conventions: COARDS
+    dimensions(sizes): lon(72), lat(46), alt001(1), lev(29), time(24)
+    variables(dimensions): float32 lon(lon), float32 lat(lat), float32 lev(lev), float32 time(time), float32 IJ_AVG_S__CO(time,lev,lat,lon), float32 PEDGE_S__PEDGE(time,lev,lat,lon), float32 DAO_3D_S__UWND(time,lev,lat,lon), float32 DAO_3D_S__VWND(time,lev,lat,lon), float32 DAO_3D_S__TMPU(time,lev,lat,lon), float32 TIME_SER__RH(time,lev,lat,lon), float32 PBLDEPTH__PBL_M(time,lat,lon), float32 PBLDEPTH__PBL_L(time,lat,lon)
+    groups: 
+
+
+---------------------------
+
+OrderedDict([('lon', <class 'netCDF4._netCDF4.Variable'>
+              float32 lon(lon)
+                  long_name: Longitude
+                  units: degrees_east
+              unlimited dimensions: 
+              current shape = (72,)
+              filling off), ('lat', <class 'netCDF4._netCDF4.Variable'>
+              float32 lat(lat)
+                  long_name: Latitude
+                  units: degrees_north
+              unlimited dimensions: 
+              current shape = (46,)
+              filling off), ('lev', <class 'netCDF4._netCDF4.Variable'>
+              float32 lev(lev)
+                  long_name: Eta Centers
+                  units: sigma_level
+              unlimited dimensions: 
+              current shape = (29,)
+              filling off), ('time', <class 'netCDF4._netCDF4.Variable'>
+              float32 time(time)
+                  calendar: gregorian
+                  long_name: Time
+                  units: hours since 1985-1-1 00:00:0.0
+                  delta_t: 0000-00-00 01:00:00
+              unlimited dimensions: time
+              current shape = (24,)
+              filling off), ('IJ_AVG_S__CO',
+              <class 'netCDF4._netCDF4.Variable'>
+              float32 IJ_AVG_S__CO(time, lev, lat, lon)
+                  long_name: CO tracer
+                  units: ppbv
+              unlimited dimensions: time
+              current shape = (24, 29, 46, 72)
+              filling off), ('PEDGE_S__PEDGE',
+              <class 'netCDF4._netCDF4.Variable'>
+              float32 PEDGE_S__PEDGE(time, lev, lat, lon)
+                  long_name: CO tracer
+                  units: hPa
+              unlimited dimensions: time
+              current shape = (24, 29, 46, 72)
+              filling off), ('DAO_3D_S__UWND',
+              <class 'netCDF4._netCDF4.Variable'>
+              float32 DAO_3D_S__UWND(time, lev, lat, lon)
+                  long_name: GMAO UWND field
+                  units: m/s
+              unlimited dimensions: time
+              current shape = (24, 29, 46, 72)
+              filling off), ('DAO_3D_S__VWND',
+              <class 'netCDF4._netCDF4.Variable'>
+              float32 DAO_3D_S__VWND(time, lev, lat, lon)
+                  long_name: GMAO VWND field
+                  units: m/s
+              unlimited dimensions: time
+              current shape = (24, 29, 46, 72)
+              filling off), ('DAO_3D_S__TMPU',
+              <class 'netCDF4._netCDF4.Variable'>
+              float32 DAO_3D_S__TMPU(time, lev, lat, lon)
+                  long_name: GMAO TMPU field
+                  units: K
+              unlimited dimensions: time
+              current shape = (24, 29, 46, 72)
+              filling off), ('TIME_SER__RH',
+              <class 'netCDF4._netCDF4.Variable'>
+              float32 TIME_SER__RH(time, lev, lat, lon)
+                  long_name: Relative humidity
+                  units: %
+              unlimited dimensions: time
+              current shape = (24, 29, 46, 72)
+              filling off), ('PBLDEPTH__PBL_M',
+              <class 'netCDF4._netCDF4.Variable'>
+              float32 PBLDEPTH__PBL_M(time, lat, lon)
+                  long_name: PBL depth
+                  units: m
+              unlimited dimensions: time
+              current shape = (24, 46, 72)
+              filling off), ('PBLDEPTH__PBL_L',
+              <class 'netCDF4._netCDF4.Variable'>
+              float32 PBLDEPTH__PBL_L(time, lat, lon)
+                  long_name: PBL depth
+                  units: levels
+              unlimited dimensions: time
+              current shape = (24, 46, 72)
+              filling off)])
+

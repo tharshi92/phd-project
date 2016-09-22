@@ -13,9 +13,10 @@ y_test = np.load('yt.npy')
 
 # Network Parameters
 N = len(x)
-layers = [len(x.T), nn, len(y.T)]
+layers = [len(x.T), 10, len(y.T)]
 
 # Create Network and Trainer Instances
+reg = 1e-2
 net = Network(layers, N, reg, io=True)
 trainer = Trainer(net)
 
@@ -42,6 +43,6 @@ ax.set_title('Training History')
 ax.loglog(trainer.J, label='Training')
 ax.loglog(trainer.J_test, label='Testing')
 plt.legend()
-#savename = 'costsnnco.pdf'
-#plt.savefig(savename, bbox_inches='tight')
+savename = 'costsnnco.png'
+plt.savefig(savename, bbox_inches='tight')
 plt.show()

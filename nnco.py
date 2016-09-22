@@ -10,7 +10,7 @@ y_test = np.load('yt.npy')
 
 # Network Parameters
 N = len(x_test)
-layers = [len(x_test.T), nn, len(y_test.T)]
+layers = [len(x_test.T), 10, len(y_test.T)]
 
 # Create Network and Trainer Instances
 net = Network(layers, N, reg)
@@ -26,6 +26,7 @@ r = z - y
 t = np.arange(0, len(y))/24
 
 err = np.linalg.norm(r**2)/len(r)
+m = np.float(np.mean(r, axis=0))
 std = np.std(r, ddof=1)
 
 f0 = plt.figure()
@@ -40,7 +41,7 @@ ax.plot(t, y, label='testing data')
 ax.plot(t, z, label='network estimate')
 ax.plot(t, r, label='residuals')
 plt.legend(loc='center left')
-f0.savefig('fit_2.pdf', bbox_inches='tight')
+f0.savefig('fit_2.png', bbox_inches='tight')
 plt.show()
 
 
@@ -51,10 +52,10 @@ b  = (r.max() - r.min())/h
 f = plt.figure()
 init_plotting()
 ax = plt.subplot(111)  
-title = 'MSE = {:e}, $\sigma$ = {:e}'
+title = 'MSE = {:3f}, $\sigma$ = {:3f}, $\mu$ = {:3f}'
 ax.set_xlabel('Residual')
 ax.set_ylabel('Frequency')
-ax.set_title(title.format(err, std, layers, reg))
+ax.set_title(title.format(err, std, m))
 hist = plt.hist(r, bins=int(b), alpha=0.5)
-f.savefig('hist_2.pdf', bbox_inches='tight')
+f.savefig('hist_2.png', bbox_inches='tight')
 plt.show()

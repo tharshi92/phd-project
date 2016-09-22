@@ -28,8 +28,8 @@ for metadata in metadatum:
                 tr_map = tr_f.variables[var_name][j, :, :]
                 te_map = te_f.variables[var_name][j, :, :]
             else:
-                tr_map = np.mean(tr_f.variables[var_name][j, :10, :, :], axis=0)
-                te_map = np.mean(te_f.variables[var_name][j, :10, :, :], axis=0)
+                tr_map = np.mean(tr_f.variables[var_name][j, :18, :, :], axis=0)
+                te_map = np.mean(te_f.variables[var_name][j, :18, :, :], axis=0)
                 
             tr_map = tr_map[latInitial:latFinal, lonInitial:lonFinal]
             tr_mean = np.mean(tr_map, dtype=np.float64)

@@ -24,4 +24,6 @@ for i in range(len(d.T)):
     plt.title('differences for {0} data'.format(titles[i]))
     plt.xlabel('Date')
     plt.ylabel('% Difference Between 2007 and 2006')
-    #plt.savefig('diff_{0}.pdf'.format(titles[i]))
+    plt.ylim(max(-100, np.min(d[:, i])), min(100, np.max(d[:, i])))
+    plt.savefig('diff_{0}.png'.format(titles[i]))
+    

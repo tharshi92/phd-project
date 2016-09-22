@@ -91,5 +91,5 @@ testing_data = np.zeros((n, 1), dtype=np.float64)
 temp1 = np.arange(0, n)/24
 temp2 = np.arange(n, 2*n)/24
 
-reg = 1e-2
-nn = 5
+reg = 1e-4
+nn = 10
