@@ -314,13 +314,9 @@ if __name__ == '__main__':
     reg = 1e-6
 
     import matplotlib.pyplot as plt
-    from init_plotting import init_plotting
     width  = 2.5*7.784
     height = width / 1.618
     saveplots = 0
-    
-    init_plotting()
-    plt.clf()
     
     x = np.random.uniform(low=-1, high=1, size=(int(N), 1))
     x_test = np.random.uniform(low=-1, high=1, size=(int(M), 1))
