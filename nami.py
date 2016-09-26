@@ -140,8 +140,8 @@ class Network(object):
         yhat = self.forward(x)
         diff = yhat - y
         ps = self.get_params()
-        J_0 = np.linalg.norm(diff)**2
-        J_r = self.reg*np.linalg.norm(ps[:self.num_weights])**2
+        J_0 = np.sum(diff**2, axis=0)
+        J_r = self.reg*np.sum(ps[:self.num_weights]**2)
         return 0.5*(J_0 + J_r)/self.N
     
     def cost_prime(self, x, y):
@@ -252,128 +252,104 @@ class Trainer(object):
     def callback(self, params):
         self.net.set_params(params)
         self.J.append(self.net.cost(self.x, self.y))
-        self.J_test.append(self.net.cost(self.x_t, self.y_t))
-
-    def callbackGA(self, params, convergence=0.1):
-        self.net.set_params(params)
-        self.J.append(self.net.cost(self.x, self.y))
-        self.J_test.append(self.net.cost(self.x_t, self.y_t))
-    
+        self.J_test.append(self.net.cost(self.x_t, self.y_t))   
         
-    def train(self, x_train, y_train, x_test, y_test, \
-        method='BFGS', \
-        bounds=(0, 4)):
+    def train(self, x_train, y_train, x_test, y_test, method='L-BFGS-B'):
         # Make an internal variable for the callback function:
         self.x = x_train
         self.y = y_train
         self.x_t = x_test
         self.y_t = y_test
         self.method = method
-        self.bounds = bounds[0]
-        self.w_max = bounds[1]
 
         # Make empty list to store training/testing costs:
         self.J = []
         self.J_test = []
         
         print('Minimization using ' + self.method + ':')        
-            
-        if method =='GA':
-            bounds = [(-self.w_max, self.w_max) for i in \
-                range(len(self.net.get_params()))]
-            _res = spo.differential_evolution(self.cost_wrapper, \
-                bounds=bounds, args=(x_train, y_train), \
-                callback=self.callbackGA, maxiter=int(2e3), \
-                polish=1, disp=True)
-         
-        else:
-            params0 = self.net.get_params()
-            bounds = None
-            if self.bounds:
-                bounds = [(-self.w_max, self.w_max) for i in \
-                range(len(self.net.get_params()))]
-            _res = spo.minimize(\
-                self.cost_wrapper, \
-                params0, method=method, \
-                jac=self.grad_wrapper, \
-                args=(x_train, y_train), 
-                callback=self.callback, \
-                options =  \
-                {'maxiter' : int(1e4), 'disp' : 1, 'maxfun' : int(1e4)}, \
-                bounds = bounds)
+        
+        params0 = self.net.get_params()
+        _res = spo.minimize(\
+            self.cost_wrapper, \
+            params0, method=self.method, \
+            jac=self.grad_wrapper, \
+            args=(x_train, y_train), 
+            callback=self.callback)
             
         self.net.set_params(_res.x)
         self.results = _res
-            
+        
+        #%%
 if __name__ == '__main__':
      
-    N = 75
-    M = 75
-    h_layers = [8]
-    method = 'BFGS'
-    reg = 1e-4
-
-    import matplotlib.pyplot as plt
-    saveplots = 0
+    N = 1000
+    reg = 1e-3
     
-    x = np.random.uniform(low=0, high=2, size=(int(N), 1))
-    x_test = np.random.uniform(low=0, high=1, size=(int(M), 1))
+    t = np.random.uniform(low=230, high=310, size=(int(N), 1))
+    t2 = np.random.uniform(low=230, high=310, size=(int(N), 1))
+    d = np.random.uniform(low=0, high=365, size=(int(N), 1))
+    d2 = np.random.uniform(low=0, high=365, size=(int(N), 1))
     
-    def f_reg(x):
-        return np.sin(-np.pi*5*x)
+    temp1 = np.linspace(0, 365, 1000)
+    temp2 = np.linspace(200, 350, 1000)
+    dd, tt = np.meshgrid(temp1, temp2)
+    
+    def mice(d, t):
+        return (50 * np.sin(-2*np.pi*(d + 180)/30) + 100) * \
+            np.exp(-(t - 280)**2 /100000.0)
         
-    y = f_reg(x)
-    y += 0.05*np.random.randn(y.shape[0], y.shape[1])
-    y_test = f_reg(x_test)
-    y_test += 0.05*np.random.randn(y_test.shape[0], y_test.shape[1])
-    m = np.mean(x, axis=0)
-    s = np.std(x, axis=0, ddof=1)
-    X = (x - m)/s
-    Xt = (x_test - m)/s
-    Y = y
-    Yt = y_test
+    truth = mice(dd, tt)
+    y = np.zeros(int(N)).reshape((N, 1)) + 5*np.random.randn()
+    y2 = np.zeros(int(N)).reshape((N, 1)) + 5*np.random.randn()
+    
+    for i in range(N):
+        y[i] = mice(d[i], t[i])
+        y2[i] = mice(d2[i], t2[i])
+    
+    x = np.hstack((d, t))
+    x2 = np.hstack((d2, t2))
+    
+    mu_x = np.mean(x, axis=0)
+    s_x = np.std(x, axis=0, ddof=1)
+    mu_y = np.mean(y, axis=0)
+    s_y = np.std(y, axis=0, ddof=1)
 
-    layers = [len(X.T)] + [int(s) for s in h_layers] + [len(y.T)]
+    layers = [len(x.T), 10, len(y.T)]
 
-    net = Network(layers, int(N), reg, io=1)
+    net = Network(layers, N, reg, io=1)
+    #%%
     trainer = Trainer(net)
-    if method == 'L-BFGS-B':
-        bounds = (1, 10)
-    trainer.train(X, Y, Xt, Yt, method='BFGS')
-    
-    t = np.linspace(-3, 3, int(1e4)).reshape((int(1e4), 1))
-    nn = net.forward((t - m)/s)
-    mse = ((nn - f_reg(t))**2).mean(axis=0)
-    std = ((nn - f_reg(t))**2).std(axis=0, ddof=1)
-    
-    title = 'Neural Network Fit with MSE = {:.3e} and Residual $\sigma$={:.3e}'.format(mse[0], std[0])
-
-    f_reg = plt.figure()
-    ax = plt.subplot(111)
-    ax.set_title(title)
-    ax.set_xlabel('x')
-    ax.set_ylabel('g(x)')
-    ax.scatter(x_test, y_test, s=50, marker='s', edgecolors='r',
-				facecolors='none', label='Testing Data')
-    ax.plot(t, nn, color='k', label='Neural Net Estimate', linewidth = 1)
-    plt.legend()
-    savename = 'nnReg.pdf'
-    if saveplots:
-        plt.savefig(savename, bbox_inches='tight')
+    trainer.train((x - mu_x)/s_x, y, \
+        (x2 - mu_x)/s_x, y2, method='L-BFGS-B')
         
     f_cost = plt.figure()
     ax = plt.subplot(111)
-    title = 'Training History, Layers = {}, Reg={:.4e}, Method = {}'.format(layers, reg, method)
-    ax.set_title(title)
+    ax.set_title('Training History')
     plt.xlabel('Iteration')
     plt.ylabel('Cost')
-    plt.title(title)
     plt.loglog(trainer.J, label='Training')
     plt.loglog(trainer.J_test, label='Testing')
     plt.legend()
-    savename = 'costs.pdf'
-    if saveplots:
-        f_cost.savefig(savename, bbox_inches='tight')
-    plt.show()
+
+#%%
+    def fit(d, t):
+        return net.forward(np.hstack(((d, t) - mu_x)/s_x))
+
+
+#    t = np.linspace(-3, 3, int(1e4)).reshape((int(1e4), 1))
+#    nn = net.forward((t - m)/s)
+#    mse = ((nn - f_reg(t))**2).mean(axis=0)
+#    std = ((nn - f_reg(t))**2).std(axis=0, ddof=1)
+#
+#    f_reg = plt.figure()
+#    ax = plt.subplot(111)
+#    ax.set_title('Fit')
+#    ax.set_xlabel('x')
+#    ax.set_ylabel('g(x)')
+#    ax.scatter(xt, yt, s=30, marker='s', edgecolors='r',
+#				facecolors='none', label='Testing Data')
+#    ax.plot(t, nn, color='k', label='Neural Net Estimate', linewidth = 1)
+#    plt.legend()
+
 
 
