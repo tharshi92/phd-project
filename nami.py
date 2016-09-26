@@ -307,22 +307,20 @@ class Trainer(object):
             
 if __name__ == '__main__':
      
-    N = 100
-    M = 100
+    N = 75
+    M = 75
     h_layers = [8]
     method = 'BFGS'
-    reg = 1e-6
+    reg = 1e-4
 
     import matplotlib.pyplot as plt
-    width  = 2.5*7.784
-    height = width / 1.618
     saveplots = 0
     
-    x = np.random.uniform(low=-1, high=1, size=(int(N), 1))
-    x_test = np.random.uniform(low=-1, high=1, size=(int(M), 1))
+    x = np.random.uniform(low=0, high=2, size=(int(N), 1))
+    x_test = np.random.uniform(low=0, high=1, size=(int(M), 1))
     
     def f_reg(x):
-        return np.exp(-x**2)*np.sin(-np.pi*5*x)
+        return np.sin(-np.pi*5*x)
         
     y = f_reg(x)
     y += 0.05*np.random.randn(y.shape[0], y.shape[1])
@@ -343,7 +341,7 @@ if __name__ == '__main__':
         bounds = (1, 10)
     trainer.train(X, Y, Xt, Yt, method='BFGS')
     
-    t = np.linspace(-1.01, 1.01, int(1e4)).reshape((int(1e4), 1))
+    t = np.linspace(-3, 3, int(1e4)).reshape((int(1e4), 1))
     nn = net.forward((t - m)/s)
     mse = ((nn - f_reg(t))**2).mean(axis=0)
     std = ((nn - f_reg(t))**2).std(axis=0, ddof=1)
@@ -359,7 +357,6 @@ if __name__ == '__main__':
 				facecolors='none', label='Testing Data')
     ax.plot(t, nn, color='k', label='Neural Net Estimate', linewidth = 1)
     plt.legend()
-    f_reg.set_size_inches(width, height)
     savename = 'nnReg.pdf'
     if saveplots:
         plt.savefig(savename, bbox_inches='tight')
@@ -375,7 +372,6 @@ if __name__ == '__main__':
     plt.loglog(trainer.J_test, label='Testing')
     plt.legend()
     savename = 'costs.pdf'
-    f_cost.set_size_inches(width, height)
     if saveplots:
         f_cost.savefig(savename, bbox_inches='tight')
     plt.show()
