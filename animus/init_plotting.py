@@ -8,10 +8,10 @@ import matplotlib.pyplot as plt
 
 def init_plotting(): 
     
-#    plt.rcParams['figure.figsize'] = (4, 3)
+    plt.rcParams['figure.figsize'] = (4, 3)
     plt.rcParams['font.size'] = 10
-#    plt.rcParams['font.family'] = 'Serif'
-#    plt.rcParams['font.serif'] = 'Computer Modern'
+    plt.rcParams['font.family'] = 'Serif'
+    plt.rcParams['font.serif'] = 'Computer Modern'
     plt.rcParams['axes.labelsize'] = plt.rcParams['font.size']
     plt.rcParams['axes.titlesize'] = plt.rcParams['font.size']
     plt.rcParams['legend.fontsize'] = plt.rcParams['font.size']
@@ -28,7 +28,7 @@ def init_plotting():
     plt.rcParams['ytick.major.width'] = 1
     plt.rcParams['ytick.minor.width'] = 1
     plt.rcParams['legend.frameon'] = False
-    plt.rcParams['legend.loc'] = 'upper right'
+    plt.rcParams['legend.loc'] = 'upper left'
     plt.rcParams['lines.linewidth'] = 0.5
 
     plt.gca().spines['right'].set_color('none')

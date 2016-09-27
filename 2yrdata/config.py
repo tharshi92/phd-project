@@ -5,7 +5,7 @@ import matplotlib.pyplot as plt
 import os.path
 
 # directories
-dataDir = '/home/tharshi/GEOSdata/'
+dataDir = '/home/GEOSdata/'
 yrs= ['2006', '2007']
 mnths = ['0' + str(i) for i in range(1, 10)] + [str(i) for i in range(10, 13)]
 days = ['0' + str(i) for i in range(1, 10)] + [str(i) for i in range(10, 32)]
