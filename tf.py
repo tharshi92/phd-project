@@ -2,15 +2,16 @@ from __future__ import print_function
 
 import tensorflow as tf
 import numpy as np
+import matplotlib.pyplot as plt
 
 # Parameters
-learning_rate = 0.05
-training_epochs = 200
-display_step = 1
+learning_rate = 1.0
+training_epochs = 1000
+display_step = 10
 
 # Network Parameters
-n_hidden_1 = 3 # 1st layer number of features
-n_input = 2
+n_hidden_1 = 5 # 1st layer number of features
+n_input = 8
 n_output = 1
 
 # tf Graph input
@@ -47,8 +48,8 @@ optimizer = tf.train.AdamOptimizer(learning_rate=learning_rate).minimize(cost)
 
 # Initializing the variables
 init = tf.initialize_all_variables()
-batch_x = np.array(([[0,0],[0,1],[1,0],[1,1]]))
-batch_y = np.array([[1], [0], [0], [1]])
+batch_x = np.load('x.npy')
+batch_y = np.load('y.npy')
 # Launch the graph
 sess = tf.Session()
 sess.run(init)
@@ -69,6 +70,3 @@ for epoch in range(training_epochs):
         print("Epoch:", '%04d' % (epoch+1), "cost=", \
             "{:.9f}".format(avg_cost))
 print("Optimization Finished!")
-
-test = sess.run(pred, feed_dict={x:np.array([[0.9,-0.1]])})
-print(test)
