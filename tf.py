@@ -11,12 +11,13 @@ xTest = np.load('xt.npy')
 yTest = np.load('yt.npy')
 
 # Parameters
-learning_rate = 0.1
-training_epochs = 3000
-display_step = 1
+learning_rate = 1e-4
+reg = 0.
+training_epochs = 10000
+display_step = 1000
 
 # Network Parameters
-n_hidden = 8
+n_hidden = 20
 n_input = 8
 n_output = 1
 
@@ -49,8 +50,11 @@ def multilayer_perceptron(x, weights, biases):
 pred = multilayer_perceptron(x, weights, biases)
 
 # Define loss and optimizer
-cost = tf.reduce_mean(tf.square(pred - y))
-optimizer = tf.train.AdamOptimizer(learning_rate=learning_rate).minimize(cost)
+cost = tf.reduce_mean(tf.square(pred - y)) + \
+        reg * tf.nn.l2_loss(weights['h']) + \
+        reg * tf.nn.l2_loss(weights['out'])
+#optimizer = tf.train.AdamOptimizer(learning_rate=learning_rate).minimize(cost)
+optimizer = tf.train.GradientDescentOptimizer(learning_rate=learning_rate).minimize(cost)
 
 #%%
 # Initializing the variables
@@ -61,19 +65,25 @@ sess = tf.Session()
 sess.run(init)
 
 J = []
+J_test = []
 
 # Training cycle
 for epoch in range(training_epochs):
     avg_cost = 0.
+    avg_testcost = 0
     total_batch = 1
     # Loop over all batches
     for i in range(total_batch):
         # Run optimization op (backprop) and cost op (to get loss value)
         feed = {x: xTrain, y: yTrain}
+        feed2 = {x: xTest, y: yTest}
         _, c = sess.run([optimizer, cost], feed_dict=feed)
-        # Compute average loss
+        ct = sess.run(cost, feed_dict=feed2)
+        # Compute and store average loss
         avg_cost += c / total_batch
+        avg_testcost += ct / total_batch
         J.append(avg_cost)
+        J_test.append(avg_testcost)
     # Display logs per epoch step
     if epoch % display_step == 0:
         print("Epoch:", '%04d' % (epoch+1), "cost=", \
@@ -91,7 +101,7 @@ ax.set_xlabel('Iteration')
 ax.set_ylabel('Cost')
 ax.set_title('Training History')
 ax.loglog(J, label='Training')
-#ax.loglog(trainer.J_test, label='Testing')
+ax.loglog(J_test, label='Testing')
 plt.legend()
 
 r = predTest - yTest
@@ -113,17 +123,13 @@ ax.plot(t, predTest, label='network estimate')
 ax.plot(t, r, label='residuals')
 plt.legend(loc='center left')
 
-iqr = np.subtract(*np.percentile(r, [75, 25]))
-h = 2*iqr*len(r)**(-1/3)
-bins  = (r.max() - r.min())/h
-
 f_hist = plt.figure()
 ax = plt.subplot(111)  
 title = 'MSE = {:.3f}, $\sigma$ = {:.3f}, $\mu$ = {:.3f}'
 ax.set_xlabel('Residual')
 ax.set_ylabel('Frequency')
 ax.set_title(title.format(err, std, m))
-hist = plt.hist(r, bins=int(bins), alpha=0.5)
+hist = plt.hist(r, alpha=0.5)
 
 
 #%%
