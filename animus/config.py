@@ -1,12 +1,11 @@
 # This is a config file for the neural network project!
 import numpy as np
 from netCDF4 import Dataset
-import matplotlib.pyplot as plt
 import os.path
 
 # directories
-dataDir = '/home/GEOSdata/'
-yrs= ['2006', '2007']
+dataDir = '/home/tsri/netcdf_data/'
+yrs= ['2006', '2007', '2008', '2009']
 mnths = ['0' + str(i) for i in range(1, 10)] + [str(i) for i in range(10, 13)]
 days = ['0' + str(i) for i in range(1, 10)] + [str(i) for i in range(10, 32)]
 fnames = []
@@ -15,15 +14,21 @@ tmp = []
 for y in yrs:
     for m in mnths:
         for d in days:
-            fnames.append(dataDir + 'v8.G5_4x5_tagCO_ts.{0}{1}{2}_new.nc'.
+            fnames.append(dataDir + '{0}{1}{2}.nc'.
             format(y, m, d))
     
     for d in range(29, 32):
-        tmp.append(dataDir + 'v8.G5_4x5_tagCO_ts.{0}{1}{2}_new.nc'
-        .format(y, '02', d))
+	if y != '2008':
+            tmp.append(dataDir + '{0}02{1}.nc'
+            .format(y, d))
+
+    for d in range(30, 32):
+	if y == '2008':
+	    tmp.append(dataDir + '200802{0}.nc'.
+	    format(d))
 
     for m in ['04', '06', '09', '11']:
-        tmp.append(dataDir + 'v8.G5_4x5_tagCO_ts.{0}{1}{2}_new.nc'
+        tmp.append(dataDir + '{0}{1}{2}.nc'
         .format(y, m, '31'))
 
 for t in tmp:
@@ -31,9 +36,6 @@ for t in tmp:
     
 stringy = 'GEOS-Chem_CO_emiss_mass_NN_'
 emDirs = [dataDir + stringy + str(2006) + '.nc', dataDir + stringy + str(2007) + '.nc']
-
-plot = 1
-saveplot = 1
 
 # control what data is let into the network
 
@@ -90,6 +92,3 @@ testing_data = np.zeros((n, 1), dtype=np.float64)
 
 temp1 = np.arange(0, n)/24
 temp2 = np.arange(n, 2*n)/24
-
-reg = 1e-4
-nn = 10

@@ -17,7 +17,7 @@ for metadata in metadatum:
         
         trFile = fnames[i]
         teFile = fnames[i + 365]
-        tr_f = Dataset(trFile)
+	tr_f = Dataset(trFile)
         te_f = Dataset(teFile)
         
         for j in range(24):
