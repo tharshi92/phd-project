@@ -45,7 +45,7 @@ for metadata in metadatum:
         plt.legend(fontsize=10)
         plt.grid('on')
         plt.title(title)
-        plt.xlabel('Days since 010106')
+        plt.xlabel('Hours since 010106 0000')
         y_label = units
         plt.ylabel('Mean ' + units)
         if saveplot:
