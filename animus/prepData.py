@@ -1,5 +1,7 @@
 from config import *
 
+testingYear = '2008'
+
 for metadata in metadatum:
     
     var_name = metadata[0]
