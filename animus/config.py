@@ -86,9 +86,8 @@ latFinal = 33
 # total days, training days, and testing days
 d = 365
 n = d*24
+numYears = 4
+plot = 0
+saveplot = 0
 
-training_data = np.zeros((n, 1), dtype=np.float64)
-testing_data = np.zeros((n, 1), dtype=np.float64)
-
-temp1 = np.arange(0, n)/24
-temp2 = np.arange(n, 2*n)/24
+rawData = np.zeros((4 * d, 1))

@@ -1,7 +1,5 @@
 from config import *
 
-testingYear = '2008'
-
 for metadata in metadatum:
     
     var_name = metadata[0]
@@ -15,35 +13,26 @@ for metadata in metadatum:
     
     print('Preparing ' + title + ' Data..')
     
-    for i in range(d):
+    for i in range(numYears * d):
         
         trFile = fnames[i]
-        teFile = fnames[i + 365]
-	tr_f = Dataset(trFile)
-        te_f = Dataset(teFile)
+        data = Dataset(trFile)
         
         for j in range(24):
             
             idx = 24*i + j
             
             if var_name == 'PBLDEPTH__PBL_M':
-                tr_map = tr_f.variables[var_name][j, :, :]
-                te_map = te_f.variables[var_name][j, :, :]
+                dataMap = data.variables[var_name][j, :, :]
             else:
-                tr_map = np.mean(tr_f.variables[var_name][j, :18, :, :], axis=0)
-                te_map = np.mean(te_f.variables[var_name][j, :18, :, :], axis=0)
+                dataMap = np.mean(data.variables[var_name][j, :18, :, :], axis=0)
                 
-            tr_map = tr_map[latInitial:latFinal, lonInitial:lonFinal]
-            tr_mean = np.mean(tr_map, dtype=np.float64)
+            truncatedDataMap = dataMap[latInitial:latFinal, lonInitial:lonFinal]
+            mapMean = np.mean(truncatedDataMap, dtype=np.float64)
             
-            te_map = te_map[latInitial:latFinal, lonInitial:lonFinal]
-            te_mean = np.mean(te_map, dtype=np.float64)
-            
-            training_data[idx, :] = tr_mean
-            testing_data[idx, :] = te_mean
+            rawData[idx, :] = mapMean
         
-        tr_f.close()
-        te_f.close()
+        data.close()
     
     if plot:    
         print('Plotting data..')
