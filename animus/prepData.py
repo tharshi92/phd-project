@@ -51,7 +51,7 @@ for metadata in metadatum:
         if saveplot:
             plt.savefig(title, extension='pdf')
 
-    np.save(title, rawData)
+    np.save('/home/tsri/npyData/' + title, rawData)
     print('done.')
 
 #%%
