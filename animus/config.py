@@ -13,9 +13,9 @@ saveplot = 0
 
 # path information
 if animus:
-    homeDir = '/home/tsri/'
+    homeDir = '/home/tsri/phd-project/'
 else:
-    homeDir = '/home/tharshisri/'
+    homeDir = '/home/tharshisri/phd-project/'
 
 # navigate to home directory
 os.chdir(homeDir)
