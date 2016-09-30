@@ -1,10 +1,31 @@
 # This is a config file for the neural network project!
 import numpy as np
-from netCDF4 import Dataset
+#from netCDF4 import Dataset
 import os.path
+from time import gmtime, strftime
 
-# directories
-dataDir = '/home/tsri/netcdf_data/'
+animus = 1
+mac = 0
+linux = 0
+runName = strftime("RUN_%Y%m%d_%H%M", gmtime())
+plot = 0
+saveplot = 0
+
+# path information
+if animus:
+    homeDir = '/home/tsri/'
+else:
+    homeDir = '/home/tharshisri/'
+
+# navigate to home directory
+os.chdir(homeDir)
+
+# check if folder exists and put files inside there
+folderName = homeDir + runName + '/'
+if not os.path.exists(folderName):
+    os.makedirs(folderName)
+
+dataDir = homeDir + 'netcdf_data/'
 yrs= ['2006', '2007', '2008', '2009']
 mnths = ['0' + str(i) for i in range(1, 10)] + [str(i) for i in range(10, 13)]
 days = ['0' + str(i) for i in range(1, 10)] + [str(i) for i in range(10, 32)]
@@ -76,7 +97,7 @@ if pbl:
 if field:
     metadatum.append(field_metadata)
 
-# Below we describe the geometry of the box to analyze
+# describe the geometry of the area to analyze
 
 lonInitial = 20
 lonFinal = 21
@@ -87,7 +108,5 @@ latFinal = 33
 d = 365
 numYears = 4
 n = numYears * d * 24
-plot = 0
-saveplot = 0
 
 rawData = np.zeros((n, 1))
