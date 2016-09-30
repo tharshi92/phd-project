@@ -4,26 +4,28 @@ import numpy as np
 import os.path
 from time import gmtime, strftime
 
-animus = 1
-mac = 0
+animus = 0
+mac = 1
 linux = 0
-runName = strftime("RUN_%Y%m%d_%H%M", gmtime())
+runName = strftime("RUN_%Y%m%d", gmtime())
 plot = 0
 saveplot = 0
 
 # path information
 if animus:
     homeDir = '/home/tsri/phd-project/'
-else:
+if linux:
     homeDir = '/home/tharshisri/phd-project/'
-
-# navigate to home directory
-os.chdir(homeDir)
+if mac:
+    homeDir = '/Users/tsri/phd-project/'
 
 # check if folder exists and put files inside there
 folderName = homeDir + runName + '/'
 if not os.path.exists(folderName):
     os.makedirs(folderName)
+
+# navigate to working directory
+os.chdir(homeDir)
 
 dataDir = homeDir + 'netcdf_data/'
 yrs= ['2006', '2007', '2008', '2009']
