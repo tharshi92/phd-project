@@ -31,10 +31,14 @@ dataDir = homeDir + 'netcdf_data/'
 yrs= ['2006', '2007', '2008', '2009']
 mnths = ['0' + str(i) for i in range(1, 10)] + [str(i) for i in range(10, 13)]
 days = ['0' + str(i) for i in range(1, 10)] + [str(i) for i in range(10, 32)]
+emDirs = []
 fnames = []
 tmp = []
 
 for y in yrs:
+
+    emDirs.append(dataDir + 'emissions' + y)
+
     for m in mnths:
         for d in days:
             fnames.append(dataDir + '{0}{1}{2}.nc'.
@@ -56,10 +60,8 @@ for y in yrs:
 
 for t in tmp:
     fnames.remove(t)
-    
-stringy = 'GEOS-Chem_CO_emiss_mass_NN_'
-emDirs = [dataDir + stringy + str(2006) + '.nc', dataDir + stringy + str(2007) + '.nc']
 
+print(emDirs)
 # control what data is let into the network
 
 field = 1
