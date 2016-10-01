@@ -6,7 +6,7 @@ for metadata in metadatum:
     title = metadata[1]
     units = metadata[2]
     
-    ghost_file = homeDir + 'npyData/' + title + '.npy'
+    ghost_file = homeDir + 'binaryData/' + title + '.npy'
     if os.path.isfile(ghost_file):
         print(ghost_file + ' already exists!! Skipping to next data stream.')
         continue
@@ -51,7 +51,7 @@ for metadata in metadatum:
         if saveplot:
             plt.savefig(title, extension='pdf')
 
-    np.save('/home/tsri/npyData/' + title, rawData)
+    np.save(homeDir + 'binaryData/' + title, rawData)
     print('done.')
 
 #%%
@@ -81,10 +81,10 @@ for year in yrs:
 
 for i in range(numYears):
 
-    ghost_file = homeDir + 'npyData/'  + title + '.npy'
+    ghost_file = homeDir + 'binaryData/'  + title + '.npy'
     if os.path.isfile(ghost_file):
         print(ghost_file + ' already exists!!')
-        continue
+        break
 
     data = Dataset(emDirs[i])
     emData = data.variables[var_name]\
@@ -113,7 +113,7 @@ for i in range(numYears):
         if saveplot:
             plt.savefig(title, extension='png', dpi=300)
         
-np.save('/home/tsri/npyData/' + title, rawData)
+np.save(homeDir + 'binaryData/' + title, rawData)
 print('done.')
 
 
