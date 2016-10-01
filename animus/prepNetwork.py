@@ -1,6 +1,7 @@
 from config import *
 import numpy as np
 import random
+import pickle
 
 print('Preparing Network Structure..')
 
@@ -11,11 +12,11 @@ for metadata in metadatum:
 
     title = metadata[1]
     if title != 'COField':
-        data = np.load(title + '.npy')
+        data = np.load(homeDir + 'binaryData/' + title + '.npy')
         state = np.hstack((state, data))
 
     else:
-        field = np.load(title + '.npy').reshape((len(state), 1))
+        field = np.load(homeDir + 'binaryData/' + title + '.npy').reshape((len(state), 1))
 
 mu_x = np.mean(state, axis=0)
 s_x = np.std(state, axis=0, ddof=1)
@@ -36,12 +37,11 @@ for i in range(testingYear - 2006):
 	if (i + 2) % 4:
 		numLeap += 1
 num = (testingYear - 2006) - numLeap
-start = 365 * num + 366 * numLeap
-end = start + 365 * (1 - leap) + 366 * leap
+start = 24 * (365 * num + 366 * numLeap)
+end = start + 24 * (365 * (1 - leap) + 366 * leap)
 
 testingData = np.hstack((x[start:end, :], y[start:end, :]))
-trainingData = np.hstack(np.ystack(x[:start, :], x[:end, :]), \
-	np.ystack(y[:start, :], y[:end, :]))
+trainingData = np.hstack((np.delete(x, range(start, end) , axis=0), np.delete(y, range(start, end), axis=0)))
 
 # shuffle x and y training arrays
 seed = int(27)
@@ -55,5 +55,5 @@ np.save(homeDir + 'binaryData/x.npy', x)
 np.save(homeDir + 'binaryData/y.npy', y)
 np.save(homeDir + 'binaryData/trData.npy', trainingData)
 np.save(homeDir + 'binaryData/teData.npy', testingData) 
-np.save(homeDir + 'binaryData/scale_params.npy', scale_params)
+pickle.dump(scale_params, open(homeDir + 'binaryData/scaleParams.p', 'wb'))
 print("Done.")
