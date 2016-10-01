@@ -62,11 +62,6 @@ var_name = metadata[0]
 title = metadata[1]
 units = metadata[2]
 
-ghost_file = homeDir + 'npyData/'  + title + '.npy'
-if os.path.isfile(ghost_file):
-    print(ghost_file + ' already exists!!')
-    continue
-
 print('Preparing ' + title + ' Data..')
 
 calendar_days = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31]
@@ -85,6 +80,11 @@ for year in yrs:
             count.append(temp * 24)
 
 for i in range(numYears):
+
+    ghost_file = homeDir + 'npyData/'  + title + '.npy'
+    if os.path.isfile(ghost_file):
+        print(ghost_file + ' already exists!!')
+        continue
 
     data = Dataset(emDirs[i])
     emData = data.variables[var_name]\

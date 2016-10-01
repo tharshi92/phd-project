@@ -112,7 +112,7 @@ numYears = len(yrs)
 d = 0
 n = 0
 for yr in yrs:
-	y = int(float(yr))
+    y = int(float(yr))
 	if y % 4 != 0:
 		n += 365 * 24
 		d += 365
