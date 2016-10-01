@@ -10,7 +10,7 @@ os.chdir(homeDir + 'binaryData/')
 
 x = np.load('x.npy')
 y = np.load('y.npy')
-scaleParams = pickle.load(open('scaleParams.p', 'rb'))
+sP = pickle.load(open('scaleParams.p', 'rb'))
 
 # Network Parameters
 N = len(x)
@@ -24,10 +24,11 @@ net = Network(layers, N, reg)
 wbs = np.load('weights.npy')
 net.set_params(wbs)
 
-z = net.forward(x)
-r = z - y
+yp = (sp[3] * y + sP[2])
+z = sP[3] * net.forward(x) + sP[2]
+r = z - yp
 
-t = np.arange(0, len(y))/24
+t = np.arange(0, len(yp))/24
 
 err = np.linalg.norm(r**2)/len(r)
 m = np.float(np.mean(r, axis=0))
@@ -43,7 +44,7 @@ ylabel = 'CO Field (ppbv)'
 ax.set_xlabel('Days Since Jan 1st 2006')
 ax.set_ylabel(ylabel)
 ax.set_title('Fit')
-ax.plot(t, y, label='testing data')
+ax.plot(t, yp, label='testing data')
 ax.plot(t, z, label='network estimate')
 ax.plot(t, r, label='residuals')
 plt.legend(loc='center left')
