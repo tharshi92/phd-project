@@ -15,17 +15,16 @@ y_test = np.load('teData.npy')[:, -1].reshape((len(x_test), 1))
 
 # Network Parameters
 N = len(x)
-layers = [len(x.T), 8, len(y.T)]
+layers = [len(x.T), hiddenNeurons, len(y.T)]
 
 # Create Network and Trainer Instances
-reg = 1e-4
 net = Network(layers, N, reg, io=True)
 trainer = Trainer(net)
 
 #%%
 
 # Train Network
-trainer.train(x, y, x_test, y_test, method='CG')
+trainer.train(x, y, x_test, y_test, method='BFGS')
 
 # change to save directory
 os.chdir(saveDir)
@@ -38,7 +37,6 @@ np.save('weights', weights)
 # Plot Training History
 f = plt.figure()
 ax = plt.subplot(111)
-plt.margins(0.0, 0.1)
 ax.set_xlabel('Iteration')
 ax.set_ylabel('Cost')
 ax.set_title('Training History')

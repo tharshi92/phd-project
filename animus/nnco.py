@@ -16,7 +16,7 @@ sP = pickle.load(open('scaleParams.p', 'rb'))
 
 # Network Parameters
 N = len(x)
-layers = [len(x.T), 8, len(y.T)]
+layers = [len(x.T), hiddenNeurons, len(y.T)]
 
 # change to run directory
 os.chdir(saveDir)
@@ -26,8 +26,8 @@ net = Network(layers, N, reg)
 wbs = np.load('weights.npy')
 net.set_params(wbs)
 
-yp = (sP[3] * y + sP[2])
-z = sP[3] * net.forward(x) + sP[2]
+yp = sP[2] *  y
+z = sP[2] * net.forward(x)
 r = z - yp
 
 t = np.arange(0, len(yp))/24
@@ -35,10 +35,6 @@ t = np.arange(0, len(yp))/24
 err = np.linalg.norm(r**2)/len(r)
 m = np.float(np.mean(r, axis=0))
 std = np.std(r, ddof=1)
-
-iqr = np.subtract(*np.percentile(r, [75, 25]))
-h = 2 * iqr * len(r)**(-1/3)
-b  = (r.max() - r.min())/h
 
 f0 = plt.figure()
 ax = plt.subplot(111)
@@ -58,6 +54,6 @@ title = 'MSE = {:3f}, $\sigma$ = {:3f}, $\mu$ = {:3f}'
 ax.set_xlabel('Residual')
 ax.set_ylabel('Frequency')
 ax.set_title(title.format(err, std, m))
-hist = plt.hist(r, bins=int(b), alpha=0.5)
+hist = plt.hist(r, alpha=0.5)
 f.savefig('hist.png', bbox_inches='tight')
 plt.show()

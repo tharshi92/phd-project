@@ -269,12 +269,14 @@ class Trainer(object):
         print('Minimization using ' + self.method + ':')        
         
         params0 = self.net.get_params()
+	options = {'disp': True, 'gtol': 1e-06, 'return_all': True, 'maxiter': None}
         _res = spo.minimize(\
             self.cost_wrapper, \
             params0, method=self.method, \
             jac=self.grad_wrapper, \
             args=(x_train, y_train), 
-            callback=self.callback)
+            callback=self.callback, \
+	    options=options)
             
         self.net.set_params(_res.x)
         self.results = _res

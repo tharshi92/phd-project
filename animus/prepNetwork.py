@@ -20,12 +20,11 @@ for metadata in metadatum:
 
 mu_x = np.mean(state, axis=0)
 s_x = np.std(state, axis=0, ddof=1)
-mu_y = np.mean(field, axis=0)
-s_y = np.std(field, axis=0, ddof=1)
-scale_params = [mu_x, s_x, mu_y, s_y]
+yNorm = np.amax(field, axis=0) * 0.8
+scale_params = [mu_x, s_x, yNorm]
 
 x = (state - mu_x)/s_x
-y = (field - mu_y)/s_y
+y = field/yNorm
 
 testingYear = 2007
 leap = 0

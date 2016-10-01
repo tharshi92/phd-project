@@ -117,5 +117,8 @@ for yr in yrs:
 
 rawData = np.zeros((n, 1))
 
+reg = 0
+hiddenNeurons = 10
+
 # navigate to working directory
 os.chdir(homeDir + 'phd-project/animus')
