@@ -113,11 +113,11 @@ d = 0
 n = 0
 for yr in yrs:
     y = int(float(yr))
-	if y % 4 != 0:
-		n += 365 * 24
-		d += 365
-	else:
-		n += 366 * 24
-		d += 366
+    if y % 4 != 0:
+        n += 365 * 24
+        d += 365
+    else:
+        n += 366 * 24
+        d += 366
 
 rawData = np.zeros((n, 1))
