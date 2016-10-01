@@ -9,9 +9,9 @@ os.chdir(homeDir + 'binaryData/')
 
 # Load Training/Testing Data
 x = np.load('trData.npy')[:, :-1]
-x_test = np.load('testingData.npy')[:, :-1]
-y = np.load('trData.npy')[:, -1]
-y_test = np.load('testingData.npy')[:, :-1]
+x_test = np.load('teData.npy')[:, :-1]
+y = np.load('trData.npy')[:, -1].reshape((len(x), 1))
+y_test = np.load('teData.npy')[:, -1].reshape((len(x_test), 1))
 
 # Network Parameters
 N = len(x)
