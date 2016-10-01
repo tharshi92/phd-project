@@ -73,7 +73,7 @@ leap_calendar_days = [31, 29, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31]
 count = [0]
 temp = 0
 for year in yrs:
-    y = int(float64(year))
+    y = int(float(year))
     if y % 4 != 0:
         for days in calendar_days:
             temp += days
@@ -83,19 +83,15 @@ for year in yrs:
             temp += days
             count.append(temp * 24)
 
-for i in numYears:
+for i in range(numYears):
 
     data = Dataset(emDirs[i])
     emData = data.variables[var_name]\
         [:, latInitial:latFinal, lonInitial:lonFinal]
-
-    for j in range(d * 24):
-        for k in range(12):
-            start = count[j + 12 * i]
-            end = count[j + 1 + 12 * i]
-            if j in range(start, end):
-                rawData[start:end, :] = np.ones(((end - start), 1))\
-                     * np.mean(emData[j])
+    for k in range(12):
+	start = count[k + 12 * i]
+	end = count[k + 1 + 12 * i]
+	rawData[start:end, :] = np.ones(((end - start), 1)) * np.mean(emData[k])
 
     data.close()
 
