@@ -68,24 +68,34 @@ if os.path.isfile(ghost_file):
 
 print('Preparing ' + title + ' Data..')
 
-for emFile in emDirs:
+calendar_days = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31]
+leap_calendar_days = [31, 29, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31]
+count = [0]
+temp = 0
+for year in yrs:
+    y = int(float64(year))
+    if y % 4 != 0:
+        for days in calendar_days:
+            temp += days
+            count.append(temp * 24)
+    else:
+        for days in leap_calendar_days:
+            temp += days
+            count.append(temp * 24)
 
-    data = Dataset(emFile)
+for i in numYears:
 
-    emData = data.variables[var_name][:, latInitial:latFinal, lonInitial:lonFinal]
-    calendar_days = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31]
-    count = [0]
-    temp = 0
-    for days in calendar_days:
-        temp += days
-        count.append(temp*24)
+    data = Dataset(emDirs[i])
+    emData = data.variables[var_name]\
+        [:, latInitial:latFinal, lonInitial:lonFinal]
 
-    for i in range(n):
-        for j in range(12):
-            start = count[j]
-            end = count[j + 1]
-            if i in range(start, end):
-                rawData[i, :] = np.mean(emData[j])
+    for j in range(d * 24):
+        for k in range(12):
+            start = count[j + 12 * i]
+            end = count[j + 1 + 12 * i]
+            if j in range(start, end):
+                rawData[start:end, :] = np.ones(((end - start), 1))\
+                     * np.mean(emData[j])
 
     data.close()
 

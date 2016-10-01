@@ -20,9 +20,9 @@ if mac:
     homeDir = '/Users/tsri/'
 
 # check if folder exists and put files inside there
-folderName = homeDir + 'phd-project/'  + runName + '/'
-if not os.path.exists(folderName):
-    os.makedirs(folderName)
+saveDir = homeDir + 'phd-project/'  + runName + '/'
+if not os.path.exists(saveDir):
+    os.makedirs(saveDir)
 
 # navigate to working directory
 os.chdir(homeDir + 'phd-project/')
