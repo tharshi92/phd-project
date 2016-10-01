@@ -13,14 +13,14 @@ for metadata in metadatum:
     
     print('Preparing ' + title + ' Data..')
     
-    for i in range(numYears * d):
+    for i in range(d):
         
         trFile = fnames[i]
         data = Dataset(trFile)
         
         for j in range(24):
             
-            idx = 24*i + j
+            idx = 24 * i + j
             
             if var_name == 'PBLDEPTH__PBL_M':
                 dataMap = data.variables[var_name][j, :, :]
@@ -65,6 +65,7 @@ units = metadata[2]
 ghost_file = homeDir + 'npyData/'  + title + '.npy'
 if os.path.isfile(ghost_file):
     print(ghost_file + ' already exists!!')
+    continue
 
 print('Preparing ' + title + ' Data..')
 
@@ -90,9 +91,8 @@ for i in range(numYears):
         [:, latInitial:latFinal, lonInitial:lonFinal]
     for k in range(12):
 	   start = count[k + 12 * i]
-	   end = count[k + 1 + 12 * i]
-       print(np.mean(emData[k]).shape)
-	   rawData[start:end, :] = np.ones(((end - start), 1)) * np.mean(emData[k])
+	   end = count[k + 1 + 12 * i] 
+	   rawData[start:end, :] = np.ones(((end - start), 1)) * float(np.mean(emData[k]))
 
     data.close()
 
@@ -113,8 +113,8 @@ for i in range(numYears):
         if saveplot:
             plt.savefig(title, extension='png', dpi=300)
         
-    np.save('/home/tsri/npyData/' + title, rawData)
-    print('done.')
+np.save('/home/tsri/npyData/' + title, rawData)
+print('done.')
 
 
 

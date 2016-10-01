@@ -108,8 +108,16 @@ latInitial = 32
 latFinal = 33
 
 # total days, training days, and testing days
-d = 365
-numYears = 4
-n = numYears * d * 24
+numYears = len(yrs)
+d = 0
+n = 0
+for yr in yrs:
+	y = int(float(yr))
+	if y % 4 != 0:
+		n += 365 * 24
+		d += 365
+	else:
+		n += 366 * 24
+		d += 366
 
 rawData = np.zeros((n, 1))
