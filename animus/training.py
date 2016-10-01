@@ -15,7 +15,7 @@ y_test = np.load('teData.npy')[:, -1].reshape((len(x_test), 1))
 
 # Network Parameters
 N = len(x)
-layers = [len(x.T), 4, len(y.T)]
+layers = [len(x.T), 8, len(y.T)]
 
 # Create Network and Trainer Instances
 reg = 1e-4
@@ -25,7 +25,7 @@ trainer = Trainer(net)
 #%%
 
 # Train Network
-trainer.train(x, y, x_test, y_test, method='L-BFGS-B')
+trainer.train(x, y, x_test, y_test, method='CG')
 
 # change to save directory
 os.chdir(saveDir)
