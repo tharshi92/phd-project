@@ -4,8 +4,8 @@ import numpy as np
 import os.path
 from time import gmtime, strftime
 
-animus = 0
-mac = 1
+animus = 1
+mac = 0
 linux = 0
 runName = strftime("RUN_%Y%m%d", gmtime())
 plot = 0
@@ -61,7 +61,6 @@ for y in yrs:
 for t in tmp:
     fnames.remove(t)
 
-print(emDirs)
 # control what data is let into the network
 
 field = 1
