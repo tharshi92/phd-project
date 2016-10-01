@@ -5,6 +5,8 @@ from nami import Network
 from config import *    
 import pickle
 
+reg = 1e-4
+
 # change to data directory
 os.chdir(homeDir + 'binaryData/')
 
@@ -24,7 +26,7 @@ net = Network(layers, N, reg)
 wbs = np.load('weights.npy')
 net.set_params(wbs)
 
-yp = (sp[3] * y + sP[2])
+yp = (sP[3] * y + sP[2])
 z = sP[3] * net.forward(x) + sP[2]
 r = z - yp
 
