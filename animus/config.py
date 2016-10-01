@@ -24,9 +24,6 @@ saveDir = homeDir + 'phd-project/'  + runName + '/'
 if not os.path.exists(saveDir):
     os.makedirs(saveDir)
 
-# navigate to working directory
-os.chdir(homeDir + 'phd-project/')
-
 dataDir = homeDir + 'netcdf_data/'
 yrs= ['2006', '2007', '2008', '2009']
 mnths = ['0' + str(i) for i in range(1, 10)] + [str(i) for i in range(10, 13)]
@@ -62,7 +59,6 @@ for t in tmp:
     fnames.remove(t)
 
 # control what data is let into the network
-
 field = 1
 pressure = 1
 winds = 1
@@ -101,7 +97,6 @@ if field:
     metadatum.append(field_metadata)
 
 # describe the geometry of the area to analyze
-
 lonInitial = 20
 lonFinal = 21
 latInitial = 32
@@ -121,3 +116,6 @@ for yr in yrs:
         d += 366
 
 rawData = np.zeros((n, 1))
+
+# navigate to working directory
+os.chdir(homeDir + 'phd-project/animus')

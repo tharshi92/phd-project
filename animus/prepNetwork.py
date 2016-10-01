@@ -1,39 +1,21 @@
-"""
-Created on Fri Jul 01 17:05:54 2016
-
-@author: tharshi sri, tsrikann@physics.utoronto.ca
-"""
-
+from config import *
 import numpy as np
-import matplotlib.pyplot as plt
 import random
 
 print('Preparing Network Structure..')
 
-time = np.arange(0, 24*365).reshape((24*365, 1))
+time = np.arange(0, 24 * d).reshape((24 * d, 1))
+state = time
 
-data = np.hstack((\
-    time,\
-    np.load('trUwind.npy'),\
-    np.load('trVwind.npy'),\
-    np.load('trPressure.npy'),\
-    np.load('trTemperature.npy'),\
-    np.load('trHumidity.npy'),\
-    np.load('trPBL.npy'),\
-    np.load('trCOSource.npy')))
-    
-data_test = np.hstack((\
-    time,\
-    np.load('teUwind.npy'),\
-    np.load('teVwind.npy'),\
-    np.load('tePressure.npy'),\
-    np.load('teTemperature.npy'),\
-    np.load('teHumidity.npy'),\
-    np.load('tePBL.npy'),\
-    np.load('teCOSource.npy')))
-    
-target = np.load('trCOField.npy').reshape((len(data), 1))
-target_test = np.load('teCOField.npy').reshape((len(data_test), 1))
+for metadata in metadatum:
+
+    title = metadata[1]
+    if title != 'COField':
+        data = np.load(title + '.npy')
+        state = np.hstack((state, data))
+
+    else:
+        field = np.load(title + '.npy').reshape((len(state), 1))
 
 mu_x = np.mean(data, axis=0)
 s_x = np.std(data, axis=0, ddof=1)
@@ -41,8 +23,7 @@ mu_y = np.mean(target, axis=0)
 s_y = np.std(target, axis=0)
 scale_params = [mu_x, s_x, mu_y]
 
-# shuffle x and y arrays
-
+# shuffle x and y training arrays
 seed = int(27)
 new_order = list(range(len(data)))
 random.seed(seed)
