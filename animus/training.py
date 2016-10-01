@@ -2,29 +2,33 @@
 import numpy as np
 import matplotlib.pyplot as plt
 from nami import Network, Trainer
-from init_plotting import *
-from config import nn, reg
+from config import *
+
+# change to data directory
+os.chdir(homeDir + 'binaryData/')
 
 # Load Training/Testing Data
-x = np.load('x.npy')
-x_test = np.load('xt.npy')
-y = np.load('y.npy')
-y_test = np.load('yt.npy')
+x = np.load('trData.npy')[:, :-1]
+x_test = np.load('testingData.npy')[:, :-1]
+y = np.load('trData.npy')[:, -1]
+y_test = np.load('testingData.npy')[:, :-1]
 
 # Network Parameters
 N = len(x)
-layers = [len(x.T), 10, len(y.T)]
+layers = [len(x.T), 4, len(y.T)]
 
 # Create Network and Trainer Instances
-reg = 1e-2
+reg = 1e-4
 net = Network(layers, N, reg, io=True)
 trainer = Trainer(net)
 
 #%%
 
 # Train Network
-trainer.train(x, y, x_test, y_test, method='BFGS')
+trainer.train(x, y, x_test, y_test, method='L-BFGS-B')
 
+# change to save directory
+os.chdir(saveDir)
 # Save Final Weights
 weights = net.get_params()
 np.save('weights', weights)
@@ -32,10 +36,8 @@ np.save('weights', weights)
 #%%
 
 # Plot Training History
-init_plotting()
-plt.cla()
+f = plt.figure()
 ax = plt.subplot(111)
-f_c = plt.gcf()
 plt.margins(0.0, 0.1)
 ax.set_xlabel('Iteration')
 ax.set_ylabel('Cost')
