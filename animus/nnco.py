@@ -5,8 +5,6 @@ from nami import Network
 from config import *    
 import pickle
 
-reg = 1e-4
-
 # change to data directory
 os.chdir(homeDir + 'binaryData/')
 

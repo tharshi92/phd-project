@@ -5,7 +5,7 @@ import pickle
 
 print('Preparing Network Structure..')
 
-time = np.arange(0, 24 * d).reshape((24 * d, 1))
+time = np.arange(0, 24 * d).reshape((24 * d, 1)) % 24
 state = time
 
 for metadata in metadatum:
