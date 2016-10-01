@@ -1,6 +1,6 @@
 # This is a config file for the neural network project!
 import numpy as np
-#from netCDF4 import Dataset
+from netCDF4 import Dataset
 import os.path
 from time import gmtime, strftime
 
@@ -13,19 +13,19 @@ saveplot = 0
 
 # path information
 if animus:
-    homeDir = '/home/tsri/phd-project/'
+    homeDir = '/home/tsri/'
 if linux:
-    homeDir = '/home/tharshisri/phd-project/'
+    homeDir = '/home/tharshisri/'
 if mac:
-    homeDir = '/Users/tsri/phd-project/'
+    homeDir = '/Users/tsri/'
 
 # check if folder exists and put files inside there
-folderName = homeDir + runName + '/'
+folderName = homeDir + 'phd-project/'  + runName + '/'
 if not os.path.exists(folderName):
     os.makedirs(folderName)
 
 # navigate to working directory
-os.chdir(homeDir)
+os.chdir(homeDir + 'phd-project/')
 
 dataDir = homeDir + 'netcdf_data/'
 yrs= ['2006', '2007', '2008', '2009']
@@ -37,7 +37,7 @@ tmp = []
 
 for y in yrs:
 
-    emDirs.append(dataDir + 'emissions' + y)
+    emDirs.append(dataDir + 'emissions' + y + '.nc')
 
     for m in mnths:
         for d in days:

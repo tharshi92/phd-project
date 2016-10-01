@@ -6,7 +6,7 @@ for metadata in metadatum:
     title = metadata[1]
     units = metadata[2]
     
-    ghost_file = 'tr' + title + '.npy'
+    ghost_file = homeDir + 'npyData/' + title + '.npy'
     if os.path.isfile(ghost_file):
         print(ghost_file + ' already exists!! Skipping to next data stream.')
         continue
@@ -62,7 +62,7 @@ var_name = metadata[0]
 title = metadata[1]
 units = metadata[2]
 
-ghost_file = 'tr' + title + '.npy'
+ghost_file = homeDir + 'npyData/'  + title + '.npy'
 if os.path.isfile(ghost_file):
     print(ghost_file + ' already exists!!')
 
@@ -72,7 +72,7 @@ for emFile in emDirs:
 
     data = Dataset(emFile)
 
-    emData = data.variables[var_name][:, lsatInitial:latFinal, lonInitial:lonFinal]
+    emData = data.variables[var_name][:, latInitial:latFinal, lonInitial:lonFinal]
     calendar_days = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31]
     count = [0]
     temp = 0
@@ -85,7 +85,7 @@ for emFile in emDirs:
             start = count[j]
             end = count[j + 1]
             if i in range(start, end):
-                training_data[i, :] = np.mean(tr_em[j])
+                rawData[i, :] = np.mean(emData[j])
 
     data.close()
 
