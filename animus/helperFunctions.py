@@ -13,3 +13,4 @@ def plotStreams(x):
         plt.title('data {}'.format(i))
         plt.xlabel('Sample')
         plt.ylabel('Value')
+	plt.savefig('{0}.png'.format(i))
