@@ -89,9 +89,9 @@ for i in range(numYears):
     emData = data.variables[var_name]\
         [:, latInitial:latFinal, lonInitial:lonFinal]
     for k in range(12):
-	start = count[k + 12 * i]
-	end = count[k + 1 + 12 * i]
-	rawData[start:end, :] = np.ones(((end - start), 1)) * np.mean(emData[k])
+	   start = count[k + 12 * i]
+	   end = count[k + 1 + 12 * i]
+	   rawData[start:end, :] = np.ones(((end - start), 1)) * np.mean(emData[k])
 
     data.close()
 
