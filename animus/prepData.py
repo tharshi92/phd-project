@@ -1,12 +1,14 @@
 from config import *
 
+dumpFolder = homeDir + 'binaryData/'
+
 for metadata in metadatum:
     
     var_name = metadata[0]
     title = metadata[1]
     units = metadata[2]
     
-    ghost_file = homeDir + 'binaryData/' + title + '.npy'
+    ghost_file = dumpFolder + title + '.npy'
     if os.path.isfile(ghost_file):
         print(ghost_file + ' already exists!! Skipping to next data stream.')
         continue
@@ -113,7 +115,7 @@ for i in range(numYears):
         if saveplot:
             plt.savefig(title, extension='png', dpi=300)
         
-np.save(homeDir + 'binaryData/' + title, rawData)
+np.save(dumpFolder + title, rawData)
 print('done.')
 
 
