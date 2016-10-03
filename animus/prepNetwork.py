@@ -2,6 +2,9 @@ from config import *
 import numpy as np
 import random
 import pickle
+import sys
+
+localRepo = homeDir + sys.argv[1] + '/'
 
 print('Preparing Network Structure..')
 
@@ -12,11 +15,11 @@ for metadata in metadatum:
 
     title = metadata[1]
     if title != 'COField':
-        data = np.load(homeDir + 'binaryData/' + title + '.npy')
+        data = np.load(localRepo + title + '.npy')
         state = np.hstack((state, data))
 
     else:
-        field = np.load(homeDir + 'binaryData/' + title + '.npy').reshape((len(state), 1))
+        field = np.load(localRepo + title + '.npy').reshape((len(state), 1))
 
 mu_x = np.mean(state, axis=0)
 s_x = np.std(state, axis=0, ddof=1)
@@ -50,9 +53,9 @@ random.shuffle(new_order)
 
 trainingData = trainingData[new_order, :]
 
-np.save(homeDir + 'binaryData/x.npy', x)
-np.save(homeDir + 'binaryData/y.npy', y)
-np.save(homeDir + 'binaryData/trData.npy', trainingData)
-np.save(homeDir + 'binaryData/teData.npy', testingData) 
-pickle.dump(scale_params, open(homeDir + 'binaryData/scaleParams.p', 'wb'))
+np.save(localRepo + 'x.npy', x)
+np.save(localRepo + 'y.npy', y)
+np.save(localRepo + 'trData.npy', trainingData)
+np.save(localRepo + 'teData.npy', testingData) 
+pickle.dump(scale_params, open(localRepo + 'scaleParams.p', 'wb'))
 print("Done.")

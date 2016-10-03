@@ -1,12 +1,12 @@
-# This is a config file for the neural network project!
+#This is a config file for the neural network project!
 import numpy as np
 from netCDF4 import Dataset
 import os.path
 from time import gmtime, strftime
 
-animus = 1
+animus = 0
 mac = 0
-linux = 0
+linux = 1
 runName = strftime("RUN_%Y%m%d", gmtime())
 plot = 0
 saveplot = 0
@@ -15,7 +15,7 @@ saveplot = 0
 if animus:
     homeDir = '/home/tsri/'
 if linux:
-    homeDir = '/home/tharshisri/'
+    homeDir = '/home/tharshi/'
 if mac:
     homeDir = '/Users/tsri/'
 
@@ -42,14 +42,14 @@ for y in yrs:
             format(y, m, d))
     
     for d in range(29, 32):
-	if y != '2008':
-            tmp.append(dataDir + '{0}02{1}.nc'
-            .format(y, d))
+        if y != '2008':
+            tmp.append(dataDir + '{0}02{1}.nc'\
+                .format(y, d))
 
     for d in range(30, 32):
-	if y == '2008':
-	    tmp.append(dataDir + '200802{0}.nc'.
-	    format(d))
+        if y == '2008':
+            tmp.append(dataDir + '200802{0}.nc'.\
+                format(d))
 
     for m in ['04', '06', '09', '11']:
         tmp.append(dataDir + '{0}{1}{2}.nc'
