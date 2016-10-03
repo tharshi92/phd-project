@@ -7,7 +7,7 @@ from time import gmtime, strftime
 animus = 0
 mac = 0
 linux = 1
-runName = strftime("RUN_%Y%m%d", gmtime())
+runName = strftime("%m%d%Y%_run", gmtime())
 plot = 0
 saveplot = 0
 
