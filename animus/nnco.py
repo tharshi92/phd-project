@@ -2,6 +2,7 @@
 import numpy as np
 import matplotlib.pyplot as plt
 from nami import Network
+from prepNetwork import start, end
 from config import *    
 import pickle
 import sys
@@ -30,12 +31,19 @@ net.set_params(wbs)
 yp = sP[2] *  y
 z = sP[2] * net.forward(x)
 r = z - yp
-
 t = np.arange(0, len(yp))/24
+
+y_ty = yp[start:end, :]
+z_ty = z[start:end, :]
+r_ty = r[start:end, :]
+t_ty = np.arange(0, len(y_ty))/24
 
 err = np.linalg.norm(r**2)/len(r)
 m = np.float(np.mean(r, axis=0))
 std = np.std(r, ddof=1)
+
+# save datafiles
+np.save('pred', z)
 
 f0 = plt.figure()
 ax = plt.subplot(111)
@@ -48,6 +56,18 @@ ax.plot(t, z, label='network estimate')
 ax.plot(t, r, label='residuals')
 plt.legend(loc='center left')
 f0.savefig('fit.pdf', bbox_inches='tight')
+
+f1 = plt.figure()
+ax = plt.subplot(111)
+ylabel = 'CO Field (ppbv)'
+ax.set_xlabel('Days Since Jan 1st ' + str(testingYear))
+ax.set_ylabel(ylabel)
+ax.set_title('Fit')
+ax.plot(t_ty, y_ty, label='testing data')
+ax.plot(t_ty, z_ty, label='network estimate')
+ax.plot(t_ty, r_ty, label='residuals')
+plt.legend(loc='center left')
+f0.savefig('fit_testyear.pdf', bbox_inches='tight')
 
 f = plt.figure()
 ax = plt.subplot(111)  

@@ -29,7 +29,7 @@ scale_params = [mu_x, s_x, yNorm]
 x = (state - mu_x)/s_x
 y = field/yNorm
 
-testingYear = 2007
+
 leap = 0
 flag = (testingYear - 2006 + 2) % 4
 if flag == 0:

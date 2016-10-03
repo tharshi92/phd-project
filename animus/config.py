@@ -4,20 +4,12 @@ from netCDF4 import Dataset
 import os.path
 from time import gmtime, strftime
 
-animus = 0
-mac = 0
-linux = 1
 runName = strftime("%m%d%Yrun", gmtime())
 plot = 0
 saveplot = 0
 
 # path information
-if animus:
-    homeDir = '/home/tsri/'
-if linux:
-    homeDir = '/home/tharshi/'
-if mac:
-    homeDir = '/Users/tsri/'
+homeDir = os.path.expanduser("~") + '/'
 
 # check if folder exists and put files inside there
 saveDir = homeDir + 'phd-project/'  + runName + '/'
@@ -26,6 +18,7 @@ if not os.path.exists(saveDir):
 
 dataDir = homeDir + 'netcdf_data/'
 yrs= ['2006', '2007', '2008', '2009']
+testingYear = 2007
 mnths = ['0' + str(i) for i in range(1, 10)] + [str(i) for i in range(10, 13)]
 days = ['0' + str(i) for i in range(1, 10)] + [str(i) for i in range(10, 32)]
 emDirs = []
