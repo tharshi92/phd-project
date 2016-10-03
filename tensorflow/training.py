@@ -2,7 +2,6 @@
 import numpy as np
 import matplotlib.pyplot as plt
 from nami import Network, Trainer
-from init_plotting import *
 from config import nn, reg
 
 # Load Training/Testing Data

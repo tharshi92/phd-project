@@ -1,7 +1,6 @@
 # Import needed modules
 import numpy as np
 import matplotlib.pyplot as plt
-from init_plotting import *
 from nami import Network
 from config import nn, reg
     
