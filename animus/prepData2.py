@@ -26,12 +26,10 @@ for metadata in metadatum:
             
             if var_name == 'PBLDEPTH__PBL_M':
                 dataMap = data.variables[var_name][j, :, :]
-            elif var_name == 'PEDGE_S__PEDGE' or \
-            	'DAO_3D_S__TMPU' or \
-            	'TIME_SER__RH':
-            	dataMap = np.mean(data.variables[var_name][j, 0, :, :], axis=0)
+            elif var_name == 'PEDGE_S__PEDGE' or 'DAO_3D_S__TMPU' or 'TIME_SER__RH':
+            	dataMap = data.variables[var_name][j, 0, :, :]
             else:
-                dataMap = np.mean(data.variables[var_name][j, :5, :, :], axis=0)
+                dataMap = np.mean(data.variables[var_name][j, :5, :, :], axis=0) 
                 
             truncatedDataMap = dataMap[latInitial:latFinal, lonInitial:lonFinal]
             mapMean = np.mean(truncatedDataMap, dtype=np.float64)
@@ -57,7 +55,7 @@ for metadata in metadatum:
         if saveplot:
             plt.savefig(title, extension='pdf')
 
-    np.save(homeDir + 'binaryData/' + title, rawData)
+    np.save(dumpFolder + title, rawData)
     print('done.')
 
 #%%
