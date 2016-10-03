@@ -3,9 +3,12 @@ import numpy as np
 import matplotlib.pyplot as plt
 from nami import Network, Trainer
 from config import *
+import sys
 
+localRepo = homeDir + sys.argv[1] + '/'
+print(localRepo)
 # change to data directory
-os.chdir(homeDir + 'binaryData/')
+os.chdir(localRepo)
 
 # Load Training/Testing Data
 x = np.load('trData.npy')[:, :-1]
@@ -43,6 +46,6 @@ ax.set_title('Training History')
 ax.loglog(trainer.J, label='Training')
 ax.loglog(trainer.J_test, label='Testing')
 plt.legend()
-savename = 'costsnnco.png'
+savename = 'costsnnco.pdf'
 plt.savefig(savename, bbox_inches='tight')
 plt.show()

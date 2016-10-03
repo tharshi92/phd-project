@@ -7,7 +7,7 @@ from time import gmtime, strftime
 animus = 0
 mac = 0
 linux = 1
-runName = strftime("%m%d%Y%_run", gmtime())
+runName = strftime("%m%d%Yrun", gmtime())
 plot = 0
 saveplot = 0
 
@@ -38,8 +38,8 @@ for y in yrs:
 
     for m in mnths:
         for d in days:
-            fnames.append(dataDir + '{0}{1}{2}.nc'.
-            format(y, m, d))
+            fnames.append(dataDir + '{0}{1}{2}.nc'.\
+            	format(y, m, d))
     
     for d in range(29, 32):
         if y != '2008':
@@ -117,6 +117,7 @@ for yr in yrs:
 
 rawData = np.zeros((n, 1))
 
+# network parameters
 reg = 0
 hiddenNeurons = 10
 
