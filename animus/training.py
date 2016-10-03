@@ -6,7 +6,7 @@ from config import *
 import sys
 
 localRepo = homeDir + sys.argv[1] + '/'
-print(localRepo)
+
 # change to data directory
 os.chdir(localRepo)
 
@@ -31,6 +31,14 @@ trainer.train(x, y, x_test, y_test, method='BFGS')
 
 # change to save directory
 os.chdir(saveDir)
+
+# secondary directory for different runs on sameday
+if not os.path.exists(sys.argv[1]):
+    os.makedirs(sys.argv[1])
+
+# change to specific run directory
+os.chdir(sys.argv[1])
+
 # Save Final Weights
 weights = net.get_params()
 np.save('weights', weights)

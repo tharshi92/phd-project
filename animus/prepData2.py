@@ -25,14 +25,16 @@ for metadata in metadatum:
             idx = 24 * i + j
             
             if var_name == 'PBLDEPTH__PBL_M':
-                dataMap = data.variables[var_name][j, :, :]
+                dataMap = data.variables[var_name]\
+                    [j, lat_i:lat_f, lon_i:lon_f]
             elif var_name == 'PEDGE_S__PEDGE' or 'DAO_3D_S__TMPU' or 'TIME_SER__RH':
-            	dataMap = data.variables[var_name][j, 0, :, :]
+            	dataMap = data.variables[var_name]\
+                    [j, 0, lat_i:lat_f, lon_i:lon_f]
             else:
-                dataMap = np.mean(data.variables[var_name][j, :5, :, :], axis=0) 
+                dataMap = np.mean(data.variables[var_name]\
+                    [j, :5, lat_i:lat_f, lon_i:lon_f], axis=0) 
                 
-            truncatedDataMap = dataMap[latInitial:latFinal, lonInitial:lonFinal]
-            mapMean = np.mean(truncatedDataMap, dtype=np.float64)
+            mapMean = np.mean(dataMap, dtype=np.float64)
             
             rawData[idx, :] = mapMean
         

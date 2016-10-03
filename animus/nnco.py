@@ -4,9 +4,12 @@ import matplotlib.pyplot as plt
 from nami import Network
 from config import *    
 import pickle
+import sys
+
+localRepo = homeDir + sys.argv[1] + '/'
 
 # change to data directory
-os.chdir(homeDir + 'binaryData/')
+os.chdir(localRepo)
 
 x = np.load('x.npy')
 y = np.load('y.npy')
@@ -16,8 +19,8 @@ sP = pickle.load(open('scaleParams.p', 'rb'))
 N = len(x)
 layers = [len(x.T), hiddenNeurons, len(y.T)]
 
-# change to run directory
-os.chdir(saveDir)
+# change to specific run directory
+os.chdir(saveDir + sys.argv[1])
 
 # Create Network and Trainer Instances
 net = Network(layers, N, reg)
@@ -44,7 +47,7 @@ ax.plot(t, yp, label='testing data')
 ax.plot(t, z, label='network estimate')
 ax.plot(t, r, label='residuals')
 plt.legend(loc='center left')
-f0.savefig('fit.png', bbox_inches='tight')
+f0.savefig('fit.pdf', bbox_inches='tight')
 
 f = plt.figure()
 ax = plt.subplot(111)  
@@ -53,5 +56,5 @@ ax.set_xlabel('Residual')
 ax.set_ylabel('Frequency')
 ax.set_title(title.format(err, std, m))
 hist = plt.hist(r, alpha=0.5)
-f.savefig('hist.png', bbox_inches='tight')
+f.savefig('hist.pdf', bbox_inches='tight')
 plt.show()

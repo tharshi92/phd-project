@@ -97,10 +97,10 @@ if field:
     metadatum.append(field_metadata)
 
 # describe the geometry of the area to analyze
-lonInitial = 20
-lonFinal = 21
-latInitial = 32
-latFinal = 33
+lon_i = 20
+lon_f = 21
+lat_i = 32
+lat_f = 33
 
 # total days, training days, and testing days
 numYears = len(yrs)
