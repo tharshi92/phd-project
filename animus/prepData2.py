@@ -87,7 +87,7 @@ for year in yrs:
 
 for i in range(numYears):
 
-    ghost_file = homeDir + 'binaryData/'  + title + '.npy'
+    ghost_file = dumpFolder + title + '.npy'
     if os.path.isfile(ghost_file):
         print(ghost_file + ' already exists!!')
         break
