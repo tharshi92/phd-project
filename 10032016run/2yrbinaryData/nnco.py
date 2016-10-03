@@ -6,7 +6,7 @@ import pickle
 import sys
 
 hiddenNeurons = 10
-reg = 1e-4
+reg = 1e-3
 x = np.load('state.npy')[:364*2*24, :]
 y = np.load('field.npy')[:364*2*24, :]
 sP = pickle.load(open('scaleParams.p', 'rb'))
@@ -37,7 +37,7 @@ std = np.std(r, ddof=1)
 # save datafiles
 np.save('pred', z)
 
-f0 = plt.figure()
+f0 = plt.figure(figsize = (14, 8))
 ax = plt.subplot(111)
 ylabel = 'CO Field (ppbv)'
 ax.set_xlabel('Days Since Jan 1st 2006')
@@ -59,7 +59,7 @@ ax.plot(t_ty, y_ty, label='testing data')
 ax.plot(t_ty, z_ty, label='network estimate')
 ax.plot(t_ty, r_ty, label='residuals')
 plt.legend(loc='center left')
-f1.savefig('fit_testyear.pdf', bbox_inches='tight')
+f1.savefig('fit_testyear.png', bbox_inches='tight')
 
 f = plt.figure()
 ax = plt.subplot(111)  
@@ -68,5 +68,5 @@ ax.set_xlabel('Residual')
 ax.set_ylabel('Frequency')
 ax.set_title(title.format(err, std, m))
 hist = plt.hist(r, alpha=0.5)
-f.savefig('hist.pdf', bbox_inches='tight')
+f.savefig('hist.png', bbox_inches='tight')
 plt.show()

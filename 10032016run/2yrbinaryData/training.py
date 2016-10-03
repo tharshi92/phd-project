@@ -3,7 +3,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 from nami import Network, Trainer
 import sys
-reg = 1e-4
+reg = 1.0
 hiddenNeurons = 10
 
 # Load Training/Testing Data
@@ -25,7 +25,16 @@ trainer.train(x, y, x_test, y_test, method='BFGS')
 weights = net.get_params()
 np.save('weights', weights)
 
-#%%
+# Record Optimization results
+# dict_keys(['hess_inv', 'njev', 'nit', 'nfev', 'fun', 'status', 'message', 'x', 'allvecs', 'success', 'jac'])
+outFile = open('optimizationSummar.txt', 'w')
+outFile.write('Number of Iterations: {0} \n\n'.format(trainer.results.nit))
+outFile.write('Final Cost: {0} \n\n'.format(trainer.results.fun))
+outFile.write('Termination Status: {0} \n\n'.format(trainer.results.status))
+outFile.write('Termination Description: {0} \n\n'.format(trainer.results.message))
+outFile.write('Success: {0} \n\n'.format(trainer.results.success))
+outFile.write('Jacobian at Final Point: {0} \n\n'.format(trainer.results.jac))
+outFile.close()
 
 # Plot Training History
 f = plt.figure()
@@ -36,6 +45,6 @@ ax.set_title('Training History')
 ax.loglog(trainer.J, label='Training')
 ax.loglog(trainer.J_test, label='Testing')
 plt.legend()
-savename = 'costsnnco.pdf'
+savename = 'costsnnco.png'
 plt.savefig(savename, bbox_inches='tight')
 plt.show()
