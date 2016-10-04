@@ -43,7 +43,7 @@ np.save('weights', weights)
 
 # Record Optimization results
 # dict_keys(['hess_inv', 'njev', 'nit', 'nfev', 'fun', 'status', 'message', 'x', 'allvecs', 'success', 'jac'])
-outFile = open('optimizationSummar.txt', 'w')
+outFile = open('optimizationSummary.txt', 'w')
 outFile.write('Number of Iterations: {0} \n\n'.format(trainer.results.nit))
 outFile.write('Final Cost: {0} \n\n'.format(trainer.results.fun))
 outFile.write('Termination Status: {0} \n\n'.format(trainer.results.status))
