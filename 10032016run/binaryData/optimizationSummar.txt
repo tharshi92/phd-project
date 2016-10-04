@@ -6,8 +6,6 @@ Termination Status: 2
 
 Termination Description: Desired error not necessarily achieved due to precision loss. 
 
-Success: False 
-
 Jacobian at Final Point: [  1.82384558e-07   2.48912062e-08  -5.05221357e-04   5.63876274e-03
   -5.06015598e-04   5.63838299e-03   1.61415491e-07  -3.68683440e-09
   -7.09305515e-07   8.20808239e-09  -1.30857023e-06   9.65088454e-09
