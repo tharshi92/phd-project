@@ -2,6 +2,7 @@ from __future__ import print_function
 
 from config import *
 import sys
+import pickle
 import tensorflow as tf
 import numpy as np
 import matplotlib.pyplot as plt
@@ -12,20 +13,20 @@ localRepo = homeDir + sys.argv[1] + '/'
 os.chdir(localRepo)
 
 # Load Training/Testing Data
-x = np.load('trData.npy')[:, :-1]
+x_train = np.load('trData.npy')[:, :-1]
 x_test = np.load('teData.npy')[:, :-1]
-y = np.load('trData.npy')[:, -1].reshape((len(x), 1))
+y_train = np.load('trData.npy')[:, -1].reshape((len(x_train), 1))
 y_test = np.load('teData.npy')[:, -1].reshape((len(x_test), 1))
+sP = pickle.load(open('scaleParams.p', 'rb'))
 
 # Parameters
-learning_rate = 1e-4
-learning_rate2 = 1e-2
-reg = 1e-1
-training_epochs = 15000
+learning_rate = 1e-3
+reg = 1e-6
+training_epochs = 10000
 display_step = 1000
 
 # Network Parameters
-n_hidden = 20
+n_hidden = 70
 n_input = 8
 n_output = 1
 
@@ -61,8 +62,7 @@ pred = multilayer_perceptron(x, weights, biases)
 cost = tf.reduce_mean(tf.square(pred - y)) + \
         reg * tf.nn.l2_loss(weights['h']) + \
         reg * tf.nn.l2_loss(weights['out'])
-optimizer = tf.train.AdamOptimizer(learning_rate=learning_rate2).minimize(cost)
-#optimizer = tf.train.GradientDescentOptimizer(learning_rate=learning_rate).minimize(cost)
+optimizer = tf.train.AdamOptimizer(learning_rate=learning_rate).minimize(cost)
 
 #%%
 # Initializing the variables
@@ -83,7 +83,7 @@ for epoch in range(training_epochs):
     # Loop over all batches
     for i in range(total_batch):
         # Run optimization op (backprop) and cost op (to get loss value)
-        feed = {x: x, y: y}
+        feed = {x: x_train, y: y_train}
         feed2 = {x: x_test, y: y_test}
         _, c = sess.run([optimizer, cost], feed_dict=feed)
         ct = sess.run(cost, feed_dict=feed2)
@@ -94,13 +94,12 @@ for epoch in range(training_epochs):
         J_test.append(avg_testcost)
     # Display logs per epoch step
     if epoch % display_step == 0:
-        print("Epoch:", '%04d' % (epoch+1), "cost=", \
+        print("Epoch:", '%04d' % (epoch), "cost=", \
             "{:.9f}".format(avg_cost))
 print("Optimization Finished!")
 #%%
 
-predTest = sess.run(pred, feed_dict={x:xTest})
-predTrain = sess.run(pred, feed_dict={x:xTrain})
+predTest = sP[2] * sess.run(pred, feed_dict={x:x_test})
 
 # change to save directory
 os.chdir(saveDir)
@@ -111,6 +110,14 @@ if not os.path.exists(sys.argv[1]):
 
 # change to specific run directory
 os.chdir(sys.argv[1])
+
+r = predTest - sP[2] * y_test
+
+t = np.arange(0, len(y_test))/24
+
+err = np.linalg.norm(r**2)/len(r)
+m = np.float(np.mean(r, axis=0))
+std = np.std(r, ddof=1)
 
 # Plot Training History
 f = plt.figure()
@@ -123,16 +130,6 @@ ax.loglog(J_test, label='Testing')
 plt.legend()
 savename = 'costsnnco.png'
 plt.savefig(savename, bbox_inches='tight')
-plt.show()
-
-r = predTest - yTest
-r2 = predTrain - yTrain
-
-t = np.arange(0, len(yTest))/24
-
-err = np.linalg.norm(r**2)/len(r)
-m = np.float(np.mean(r, axis=0))
-std = np.std(r, ddof=1)
 
 f_CO = plt.figure()
 ax = plt.subplot(111)
@@ -140,29 +137,23 @@ ylabel = 'CO Field (ppbv)'
 ax.set_xlabel('Days Since Jan 1st 2007')
 ax.set_ylabel(ylabel)
 ax.set_title('Fit')
-ax.plot(t, yTest, label='testing data')
+ax.plot(t, sP[2] * y_test, label='testing data')
 ax.plot(t, predTest, label='network estimate')
 ax.plot(t, r, label='residuals')
 plt.legend(loc='center left')
-
-f_CO2 = plt.figure()
-ax = plt.subplot(111)
-ylabel = 'CO Field (ppbv)'
-ax.set_xlabel('Days Since Jan 1st 2006')
-ax.set_ylabel(ylabel)
-ax.set_title('Fit')
-ax.plot(t, yTrain, label='training data')
-ax.plot(t, predTrain, label='network estimate')
-ax.plot(t, r2, label='residuals')
-plt.legend(loc='center left')
+savename = 'fit_ty.png'
+plt.savefig(savename, bbox_inches='tight')
 
 f_hist = plt.figure()
 ax = plt.subplot(111)  
-title = 'MSE = {:.3f}, $\sigma$ = {:.3f}, $\mu$ = {:.3f}'
+title = 'MSE = {:.3e}, $\sigma$ = {:.3e}, $\mu$ = {:.3e}'
 ax.set_xlabel('Residual')
 ax.set_ylabel('Frequency')
 ax.set_title(title.format(err, std, m))
 hist = plt.hist(r, alpha=0.5)
+savename = 'hist.png'
+plt.savefig(savename, bbox_inches='tight')
+
 plt.show()
 
 #%%
