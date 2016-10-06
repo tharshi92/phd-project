@@ -22,7 +22,7 @@ sP = pickle.load(open('scaleParams.p', 'rb'))
 # Parameters
 learning_rate = 5e-3
 reg = 1e-4
-training_epochs = 10000
+training_epochs = 20000
 display_step = 1000
 
 # Network Parameters

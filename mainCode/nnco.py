@@ -38,9 +38,9 @@ z_ty = z[start:end, :]
 r_ty = r[start:end, :]
 t_ty = np.arange(0, len(y_ty))/24
 
-err = np.linalg.norm(r**2)/len(r)
-m = np.float(np.mean(r, axis=0))
-std = np.std(r, ddof=1)
+err = np.linalg.norm(r_ty**2)/len(r)
+m = np.float(np.mean(r_ty, axis=0))
+std = np.std(r_ty, ddof=1)
 
 # save datafiles
 np.save('pred', z)
