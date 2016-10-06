@@ -20,13 +20,13 @@ y_test = np.load('teData.npy')[:, -1].reshape((len(x_test), 1))
 sP = pickle.load(open('scaleParams.p', 'rb'))
 
 # Parameters
-learning_rate = 1e-3
-reg = 1e-6
+learning_rate = 5e-3
+reg = 1e-4
 training_epochs = 10000
 display_step = 1000
 
 # Network Parameters
-n_hidden = 70
+n_hidden = 8
 n_input = 8
 n_output = 1
 
