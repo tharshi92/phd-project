@@ -53,6 +53,7 @@ def multilayer_perceptron(x, weights, biases):
     layer_1 = tf.nn.relu(layer_1)
     # Output layer with linear activation
     out_layer = tf.matmul(layer_1, weights['out']) + biases['out']
+    out_layer = tf.nn.relu(out_layer)
     return out_layer
 
 # Construct model
@@ -64,7 +65,6 @@ cost = tf.reduce_mean(tf.square(pred - y)) + \
         reg * tf.nn.l2_loss(weights['out'])
 optimizer = tf.train.AdamOptimizer(learning_rate=learning_rate).minimize(cost)
 
-#%%
 # Initializing the variables
 init = tf.initialize_all_variables()
     
@@ -97,7 +97,6 @@ for epoch in range(training_epochs):
         print("Epoch:", '%04d' % (epoch), "cost=", \
             "{:.9f}".format(avg_cost))
 print("Optimization Finished!")
-#%%
 
 predTest = sP[2] * sess.run(pred, feed_dict={x:x_test})
 
@@ -156,40 +155,3 @@ plt.savefig(savename, bbox_inches='tight')
 os.chdir(homeDir)
 
 plt.show()
-
-#%%
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
