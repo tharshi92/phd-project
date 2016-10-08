@@ -8,6 +8,9 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 localRepo = homeDir + sys.argv[1] + '/'
+learning_rate = float(sys.argv[2])
+reg = float(sys.argv[3])
+training_epochs = int(sys.argv[4])
 
 # change to data directory
 os.chdir(localRepo)
@@ -20,9 +23,6 @@ y_test = np.load('teData.npy')[:, -1].reshape((len(x_test), 1))
 sP = pickle.load(open('scaleParams.p', 'rb'))
 
 # Parameters
-learning_rate = 5e-3
-reg = 1e-4
-training_epochs = 20000
 display_step = 1000
 
 # Network Parameters
@@ -112,9 +112,7 @@ if not os.path.exists(sys.argv[1]):
 os.chdir(sys.argv[1])
 
 r = predTest - sP[2] * y_test
-
 t = np.arange(0, len(y_test))/24
-
 err = np.linalg.norm(r**2)/len(r)
 m = np.float(np.mean(r, axis=0))
 std = np.std(r, ddof=1)
@@ -154,19 +152,12 @@ hist = plt.hist(r, alpha=0.5)
 savename = 'hist.png'
 plt.savefig(savename, bbox_inches='tight')
 
+# change to save directory
+os.chdir(homeDir)
+
 plt.show()
 
 #%%
-
-
-
-
-
-
-
-
-
-
 
 
 
