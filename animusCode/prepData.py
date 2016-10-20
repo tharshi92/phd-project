@@ -1,6 +1,6 @@
 from config import *
 
-dumpFolder = homeDir + 'binaryData/'
+dumpFolder = homeDir + '6yrdata/'
 
 for metadata in metadatum:
     

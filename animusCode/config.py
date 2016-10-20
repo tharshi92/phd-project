@@ -17,7 +17,7 @@ if not os.path.exists(saveDir):
     os.makedirs(saveDir)
 
 dataDir = homeDir + 'netcdf_data/'
-yrs= ['2006', '2007', '2008', '2009']
+yrs= ['2006', '2007', '2008', '2009', '2010', '2011']
 testingYear = 2007
 mnths = ['0' + str(i) for i in range(1, 10)] + [str(i) for i in range(10, 13)]
 days = ['0' + str(i) for i in range(1, 10)] + [str(i) for i in range(10, 32)]
