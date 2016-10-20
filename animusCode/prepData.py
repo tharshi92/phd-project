@@ -16,8 +16,8 @@ for metadata in metadatum:
     print('Preparing ' + title + ' Data..')
     
     for i in range(d):
-        
-        trFile = fnames[i]
+        print(fnames[i])
+	trFile = fnames[i]
         data = Dataset(trFile)
         
         for j in range(24):
@@ -54,7 +54,7 @@ for metadata in metadatum:
         if saveplot:
             plt.savefig(title, extension='pdf')
 
-    np.save(homeDir + 'binaryData/' + title, rawData)
+    np.save(dumpFolder + title, rawData)
     print('done.')
 
 #%%
