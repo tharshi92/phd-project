@@ -32,7 +32,7 @@ for i in range(numYears):
 
     data = Dataset(emNames[i])
     emData = data.variables[var_name]\
-        [:, latInitial:latFinal, lonInitial:lonFinal]
+        [:, lat_i:lat_f, lon_i:lon_f]
     for k in range(12):
 	   start = count[k + 12 * i]
 	   end = count[k + 1 + 12 * i] 
