@@ -16,37 +16,36 @@ saveDir = homeDir + 'phd-project/'  + runName + '/'
 if not os.path.exists(saveDir):
     os.makedirs(saveDir)
 
-dataDir = homeDir + 'netcdf_data/'
-yrs= ['2006', '2007', '2008', '2009']
+dataDir = '/users/jk/13/dbj/NN_CO/run.v8-02-01.G5_tagco_new_3Dchem/timeseries2/'
+emDir = '/users/jk/13/dbj/NN_CO/'
+yrs= ['2006', '2007', '2008', '2009', '2010', '2011']
 testingYear = 2007
 mnths = ['0' + str(i) for i in range(1, 10)] + [str(i) for i in range(10, 13)]
 days = ['0' + str(i) for i in range(1, 10)] + [str(i) for i in range(10, 32)]
-emDirs = []
+emNames = []
 fnames = []
 tmp = []
+prefix = 'v8.G5_4x5_tagCO_ts.'
+suffix = '_new.nc'
 
 for y in yrs:
 
-    emDirs.append(dataDir + 'emissions' + y + '.nc')
+    emNames.append(emDir + 'GEOS-Chem_CO_emiss_mass_NN_' + y + '.nc')
 
     for m in mnths:
         for d in days:
-            fnames.append(dataDir + '{0}{1}{2}.nc'.\
-            	format(y, m, d))
+            fnames.append(dataDir + prefix + '{0}{1}{2}'.format(y, m, d) + suffix)
     
     for d in range(29, 32):
         if y != '2008':
-            tmp.append(dataDir + '{0}02{1}.nc'\
-                .format(y, d))
+            tmp.append(dataDir + prefix + '{0}02{1}'.format(y, d) + suffix)
 
     for d in range(30, 32):
         if y == '2008':
-            tmp.append(dataDir + '200802{0}.nc'.\
-                format(d))
+            tmp.append(dataDir + prefix + '200802{0}'.format(d) + suffix)
 
     for m in ['04', '06', '09', '11']:
-        tmp.append(dataDir + '{0}{1}{2}.nc'
-        .format(y, m, '31'))
+        tmp.append(dataDir + prefix + '{0}{1}{2}'.format(y, m, '31') + suffix)
 
 for t in tmp:
     fnames.remove(t)
