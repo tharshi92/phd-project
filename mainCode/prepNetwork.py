@@ -37,7 +37,7 @@ end = start + 24 * (365 * (1 - leap) + 366 * leap)
 
 mu_x = np.mean(np.delete(state, range(start, end) , axis=0), axis=0)
 s_x = np.std(np.delete(state, range(start, end) , axis=0), axis=0, ddof=1)
-yNorm = np.amax(np.delete(field, range(start, end) , axis=0), axis=0) * 0.8
+yNorm = np.amax(np.delete(field, range(start, end) , axis=0), axis=0) * 0.65
 scale_params = [mu_x, s_x, yNorm]
 
 x = (state - mu_x)/s_x
