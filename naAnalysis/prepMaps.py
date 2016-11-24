@@ -1,9 +1,7 @@
 from config import *
 import numpy as np
-import matplotlib.pyplot as plt
-import matplotlib.animation as animation
 
-dumpFolder = saveDir
+dumpFolder = homeDir
 
 for metadata in metadatum:
     
