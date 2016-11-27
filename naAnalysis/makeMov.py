@@ -12,13 +12,11 @@ rawData = np.load(dataFolder + 'COField.npy')
 fig, ax = plt.subplots()
 
 def animate(i):
-	ax.imshow(rawData[i, :, :], interpolation='None')
+	ax.imshow(rawData[i, :, :], interpolation='None', origin='lower', cmap='hot')
 	plt.title('Slide ' + str(i))
 
-ani = animation.FuncAnimation(fig, \
-							 animate, \
-							 np.arange(0, len(rawData)), \
-							 interval=1)
+anim = animation.FuncAnimation(fig, animate, np.arange(0, len(rawData)), interval=120)
+#anim.save('animation.mp4', fps=20, extra_args=['-vcodec', 'libx264'])
 
 plt.show()
 print('done.')
