@@ -1,5 +1,5 @@
 from config import *
-dumpFolder = homeDir + '6yrdata/'
+dumpFolder = homeDir + 'finalRun/'
 
 metadata = source_metadata
 var_name = metadata[0]
@@ -39,23 +39,6 @@ for i in range(numYears):
 	   rawData[start:end, :] = np.ones(((end - start), 1)) * float(np.mean(emData[k]))
 
     data.close()
-
-    if plot:    
-        print('Plotting data..')
-        fig = plt.figure(figsize=(14, 8))
-        width = 0.4
-        plt.plot(temp1, training_data, color=[50/255, 100/255, 75/255], \
-            alpha=0.7, label='Training', linewidth=width)
-        plt.plot(temp2, testing_data, 'g', \
-            alpha=0.7, label='Testing', linewidth=width)
-        plt.legend(fontsize=10)
-        plt.grid('on')
-        plt.title(title)
-        plt.xlabel('Days since 010106')
-        y_label = units
-        plt.ylabel('Mean ' + units)
-        if saveplot:
-            plt.savefig(title, extension='png', dpi=300)
         
 np.save(dumpFolder + title, rawData)
 print('done.')
