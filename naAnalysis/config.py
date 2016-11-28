@@ -11,7 +11,7 @@ saveplot = 0
 homeDir = os.path.expanduser("~") + '/'
 
 # check if folder exists and put files inside there
-saveDir = homeDir + 'phd-project/'  + 'naAnalysis/' +runName + '/'
+saveDir = homeDir + 'phd-project/'  + 'naAnalysis/' + runName + '/'
 if not os.path.exists(saveDir):
     os.makedirs(saveDir)
 
