@@ -111,4 +111,4 @@ rawData = np.zeros((n, 1))
 
 # network parameters
 reg = 0
-hiddenNeurons = 10
+hiddenNeurons = 5

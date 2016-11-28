@@ -6,6 +6,7 @@ from config import *
 import sys
 
 localRepo = homeDir + sys.argv[1] + '/'
+method = str(sys.argv[2])
 
 # change to data directory
 os.chdir(localRepo)
@@ -25,17 +26,17 @@ net = Network(layers, N, reg, io=True)
 trainer = Trainer(net)
 
 # Train Network
-trainer.train(x, y, x_test, y_test, method='BFGS')
+trainer.train(x, y, x_test, y_test, method=method)
 
 # change to save directory
 os.chdir(saveDir)
 
 # secondary directory for different runs on sameday
-if not os.path.exists(sys.argv[1]):
-    os.makedirs(sys.argv[1])
+if not os.path.exists(sys.argv[1] + '/nami'):
+    os.makedirs(sys.argv[1] + '/nami')
 
 # change to specific run directory
-os.chdir(sys.argv[1])
+os.chdir(sys.argv[1] + '/nami')
 
 # Save Final Weights
 weights = net.get_params()

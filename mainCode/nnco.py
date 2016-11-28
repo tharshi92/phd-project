@@ -21,7 +21,7 @@ N = len(x)
 layers = [len(x.T), hiddenNeurons, len(y.T)]
 
 # change to specific run directory
-os.chdir(saveDir + sys.argv[1])
+os.chdir(saveDir + sys.argv[1] + '/nami')
 
 # Create Network and Trainer Instances
 net = Network(layers, N, reg)
