@@ -1,9 +1,4 @@
-# -*- coding: utf-8 -*-
-"""
-Created on Mon Sep  5 12:21:14 2016
-
-@author: tharshi
-"""
+import numpy as np
 import matplotlib.pyplot as plt
 
 def plotStreams(x):
@@ -14,3 +9,8 @@ def plotStreams(x):
         plt.xlabel('Sample')
         plt.ylabel('Value')
 	plt.savefig('{0}.png'.format(i))
+
+def moving_average(a, window) :
+    ret = np.cumsum(a, dtype=float)
+    ret[window:] = ret[window:] - ret[:-window]
+    return ret[window - 1:] / window
