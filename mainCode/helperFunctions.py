@@ -11,6 +11,6 @@ def plotStreams(x):
 	plt.savefig('{0}.png'.format(i))
 
 def moving_average(a, window) :
-    ret = np.cumsum(a, dtype=float)
-    ret[window:] = ret[window:] - ret[:-window]
-    return ret[window - 1:] / window
+    ma = np.cumsum(a, dtype=float)
+    ma[window:] = ma[window:] - ma[:-window]
+    return ma[window - 1:] / window
