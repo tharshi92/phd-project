@@ -26,7 +26,7 @@ sP = pickle.load(open('scaleParams.p', 'rb'))
 display_step = 1000
 
 # Network Parameters
-n_hidden = 8
+n_hidden = 10
 n_input = 8
 n_output = 1
 
@@ -150,8 +150,5 @@ ax.set_title(title.format(err, std, m))
 hist = plt.hist(r, alpha=0.5)
 savename = 'hist.png'
 plt.savefig(savename, bbox_inches='tight')
-
-# change to save directory
-os.chdir(homeDir)
 
 plt.show()
