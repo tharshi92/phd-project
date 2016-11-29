@@ -4,6 +4,7 @@ import sys
 import pickle
 import tensorflow as tf
 import numpy as np
+import matplotlib.pyplot as plt
 
 localRepo = homeDir + sys.argv[1] + '/'
 learning_rate = float(sys.argv[2])
@@ -24,7 +25,7 @@ sP = pickle.load(open('scaleParams.p', 'rb'))
 display_step = 1000
 
 # Network Parameters
-n_hidden = 10
+n_hidden = 5
 n_input = 8
 n_output = 1
 
@@ -125,27 +126,5 @@ plt.legend()
 savename = 'costsnnco.png'
 plt.savefig(savename, bbox_inches='tight')
 
-f_CO = plt.figure()
-ax = plt.subplot(111)
-ylabel = 'CO Field (ppbv)'
-ax.set_xlabel('Days Since Jan 1st 2007')
-ax.set_ylabel(ylabel)
-ax.set_title('Fit')
-ax.plot(t, sP[2] * y_test, label='testing data')
-ax.plot(t, predTest, label='network estimate')
-ax.plot(t, r, label='residuals')
-plt.legend(loc='center left')
-savename = 'fit_ty.png'
-plt.savefig(savename, bbox_inches='tight')
-
-f_hist = plt.figure()
-ax = plt.subplot(111)  
-title = 'MSE = {:.3e}, $\sigma$ = {:.3e}, $\mu$ = {:.3e}'
-ax.set_xlabel('Residual')
-ax.set_ylabel('Frequency')
-ax.set_title(title.format(err, std, m))
-hist = plt.hist(r, alpha=0.5)
-savename = 'hist.png'
-plt.savefig(savename, bbox_inches='tight')
-
 plt.show()
+
