@@ -1,11 +1,9 @@
 from __future__ import print_function
-
 from config import *
 import sys
 import pickle
 import tensorflow as tf
 import numpy as np
-import matplotlib.pyplot as plt
 
 localRepo = homeDir + sys.argv[1] + '/'
 learning_rate = float(sys.argv[2])
@@ -99,22 +97,21 @@ for epoch in range(training_epochs):
 print("Optimization Finished!")
 
 predTest = sP[2] * sess.run(pred, feed_dict={x:x_test})
+signal = sP[2] * y_test
 
 # change to save directory
 os.chdir(saveDir)
 
 # secondary directory for different runs on sameday
-if not os.path.exists(sys.argv[1]):
-    os.makedirs(sys.argv[1])
+if not os.path.exists(sys.argv[1] + '/tf'):
+    os.makedirs(sys.argv[1] + '/tf')
 
 # change to specific run directory
-os.chdir(sys.argv[1])
+os.chdir(sys.argv[1] + '/tf')
 
-r = predTest - sP[2] * y_test
-t = np.arange(0, len(y_test))/24
-err = np.linalg.norm(r**2)/len(r)
-m = np.float(np.mean(r, axis=0))
-std = np.std(r, ddof=1)
+# save all data
+np.save('z', predTest)
+np.save('signal', signal)
 
 # Plot Training History
 f = plt.figure()

@@ -2,6 +2,7 @@
 import numpy as np
 import matplotlib.pyplot as plt
 from nami import Network
+from helperFunctions import *
 from prepNetwork import start, end
 from config import *    
 import pickle
@@ -45,7 +46,7 @@ std = np.std(r_ty, ddof=1)
 # save datafiles
 np.save('pred', z)
 
-f0 = plt.figure(figsize=(14, 8))
+f0 = plt.figure(figsize=(12, 8))
 ax = plt.subplot(111)
 ylabel = 'CO Field (ppbv)'
 ax.set_xlabel('Days Since Jan 1st 2006')
@@ -57,7 +58,7 @@ ax.plot(t, r, label='residuals')
 plt.legend(loc='center left')
 f0.savefig('fit.png', bbox_inches='tight')
 
-f1 = plt.figure()
+f1 = plt.figure(figsize=(12, 8))
 ax = plt.subplot(111)
 ylabel = 'CO Field (ppbv)'
 ax.set_xlabel('Days Since Jan 1st ' + str(testingYear))
@@ -69,12 +70,31 @@ ax.plot(t_ty, r_ty, label='residuals')
 plt.legend(loc='center left')
 f1.savefig('fit_testyear.png', bbox_inches='tight')
 
-f = plt.figure()
+f2 = plt.figure()
 ax = plt.subplot(111)  
 title = 'MSE = {:3f}, $\sigma$ = {:3f}, $\mu$ = {:3f}'
 ax.set_xlabel('Residual')
 ax.set_ylabel('Frequency')
 ax.set_title(title.format(err, std, m))
 hist = plt.hist(r, alpha=0.5)
-f.savefig('hist.png', bbox_inches='tight')
+f2.savefig('hist.png', bbox_inches='tight')
+
+windows = [24, 3 * 24, 7 * 24, 30 * 24, 120 * 24]
+
+for w in windows:
+	zw = moving_average(z_ty, w)
+	yw = moving_average(y_ty, w)
+	f = plt.figure(figsize=(12, 8))
+	ax = plt.subplot(111)
+	ylabel = 'CO Field (Moving Average {0} Days, ppbv)'.format(w/24)
+	ax.set_xlabel('Hours Since Jan 1st 2007')
+	ax.set_ylabel(ylabel)
+	ax.set_title('Fit')
+	ax.plot(yw, label='testing data', alpha=0.5)
+	ax.plot(zw, label='network estimate')
+	plt.legend()
+	f.savefig('fit_window_{0}.png'.format(str(w/24)), bbox_inches='tight')
+
+
+
 plt.show()

@@ -51,6 +51,7 @@ outFile.write('Termination Status: {0} \n\n'.format(trainer.results.status))
 outFile.write('Termination Description: {0} \n\n'.format(trainer.results.message))
 outFile.write('Success: {0} \n\n'.format(trainer.results.success))
 outFile.write('Jacobian at Final Point: {0} \n\n'.format(trainer.results.jac))
+outFile.write('Norm of Jacobian: {0} \n\n'.format(np.linalg.norm(trainer.results.jac)))
 outFile.close()
 
 # Plot Training History
