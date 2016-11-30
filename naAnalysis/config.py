@@ -92,6 +92,11 @@ lon_f = 36
 lat_i = 22
 lat_f = 45
 
+lons = np.arange(-180, 180, 5)
+lats1 = np.arange(-86, 87, 4)
+lats2 = np.append(lats1, 89)
+lats = np.insert(lats2, 0, -89)
+
 # total days, training days, and testing days
 numYears = len(yrs)
 d = 0

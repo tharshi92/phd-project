@@ -42,6 +42,7 @@ scale_params = [mu_x, s_x, yNorm]
 
 x = (state - mu_x)/s_x
 y = field/yNorm
+t = np.linspace(0, len(y)/24, len(y))
 
 testingData = np.hstack((x[start:end, :], y[start:end, :]))
 trainingData = np.hstack((np.delete(x, range(start, end) , axis=0), np.delete(y, range(start, end), axis=0)))
@@ -54,6 +55,7 @@ random.shuffle(new_order)
 
 trainingData = trainingData[new_order, :]
 
+np.save(localRepo + 't.npy', t)
 np.save(localRepo + 'x.npy', x)
 np.save(localRepo + 'y.npy', y)
 np.save(localRepo + 'trData.npy', trainingData)
