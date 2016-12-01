@@ -108,7 +108,3 @@ for yr in yrs:
         d += 366
 
 rawData = np.zeros((n, 1))
-
-# network parameters
-reg = 0
-hiddenNeurons = 10

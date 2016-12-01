@@ -1,4 +1,4 @@
-from config import *
+from config2yr import *
 import sys
 
 folderName = sys.argv[1]
