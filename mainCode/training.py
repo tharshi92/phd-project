@@ -3,6 +3,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 from nami import Network, Trainer
 from config import *
+from prepNetwork import *
 import sys
 
 localRepo = homeDir + sys.argv[1] + '/'

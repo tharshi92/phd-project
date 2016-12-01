@@ -1,5 +1,6 @@
 from __future__ import print_function
 from config import *
+from prepNetwork import *
 import sys
 import pickle
 import tensorflow as tf
