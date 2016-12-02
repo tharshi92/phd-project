@@ -8,8 +8,6 @@ if not os.path.exists(dumpFolder):
 
 os.chdir(dumpFolder)
 
-levels = int(sys.argv[2])
-
 metadata = pbl_metadata
 var_name = metadata[0]
 title = metadata[1]
