@@ -1,4 +1,4 @@
-#This is a config file for the neural network project!
+# This is a config file for the neural network project!
 import numpy as np
 from netCDF4 import Dataset
 import os.path
