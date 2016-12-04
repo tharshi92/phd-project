@@ -32,6 +32,8 @@ for metadata in metadatum:
             
             idx = 24 * i + j
             level = int(round(pbls[idx]))
+            if level < 5:
+                level = 5
 
             dataMap = np.mean(data.variables[var_name]\
                 [j, :level, lat_i:lat_f, lon_i:lon_f], axis=0) 
