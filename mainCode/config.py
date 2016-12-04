@@ -17,7 +17,7 @@ if not os.path.exists(saveDir):
 
 dataDir = '/users/jk/13/dbj/NN_CO/run.v8-02-01.G5_tagco_new_3Dchem/timeseries2/'
 emDir = '/users/jk/13/dbj/NN_CO/'
-#yrs = ['2006', '2007']
+#yrs = ['2007', '2008']
 yrs = ['2006', '2007', '2008', '2009', '2010', '2011']
 testingYear = 2007
 mnths = ['0' + str(i) for i in range(1, 10)] + [str(i) for i in range(10, 13)]
