@@ -29,6 +29,7 @@ cb = m.colorbar(p, "right", size="5%", pad='2%')
 def animate(i):
 	data = rawData[i, :, :]
 	m.imshow(data, cmap='Blues', interpolation='None', vmin=0, vmax=400)
+	plt.title(str(i))
 
 anim = animation.FuncAnimation(fig, animate, np.arange(0, len(rawData)), interval=200)
 
