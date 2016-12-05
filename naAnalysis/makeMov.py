@@ -11,7 +11,8 @@ rawData = np.load(dataFolder + 'COField.npy')
 
 # Define Helper Functions
 
-def generate_data
+def generate_data():
+
 
 def update(data):
 	mat.set_data(data)
@@ -19,6 +20,10 @@ def update(data):
 	data = rawData[i, :, :]
 	plt.imshow(data, cmap='Blues', interpolation='None', vmin=0, vmax=400)
 	plt.title(str(i))
+
+def data_gen():
+	while True:
+		yield generate_data()
 
 
 fig, ax = plt.subplots()
