@@ -1,7 +1,5 @@
-from config import *
+from configMaps import *
 from netCDF4 import Dataset
-
-dumpFolder = homeDir
 
 for metadata in metadatum:
     
@@ -9,7 +7,7 @@ for metadata in metadatum:
     title = metadata[1]
     units = metadata[2]
     
-    ghost_file = dumpFolder + title + '.npy'
+    ghost_file = saveFolder + title + '.npy'
     if os.path.isfile(ghost_file):
         print(ghost_file + ' already exists!! Skipping to next data stream.')
         continue
@@ -34,7 +32,7 @@ for metadata in metadatum:
         
         data.close()
 
-    np.save(dumpFolder + title, rawData)
+    np.save(saveFolder + title, rawData)
     print('done.')
 
 
