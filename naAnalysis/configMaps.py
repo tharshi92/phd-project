@@ -1,5 +1,5 @@
 # This is a config file for the neural network project!
-
+import sys
 import numpy as np
 import os.path
 

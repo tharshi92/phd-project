@@ -5,8 +5,6 @@ import os.path
 from time import gmtime, strftime
 
 runName = strftime("%m%d%Yrun", gmtime())
-plot = 0
-saveplot = 0
 
 # path information
 homeDir = os.path.expanduser("~") + '/'

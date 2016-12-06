@@ -8,8 +8,9 @@ from mpl_toolkits.basemap import Basemap
 save = 1#int(sys.argv[1])
 
 # Import data
-start = 24 * (365 + 250 - 1)
-end = 24 * (365 + 300 - 1)
+y = 5
+start = 24 * (365 * y + 250 - 1)
+end = 24 * (365 * y + 300 - 1)
 dataFolder = homeDir + 'surfaceData/'
 d = np.load(dataFolder + 'COField.npy')[start:end, :, :]
 
@@ -18,11 +19,14 @@ fig = plt.figure()
 m = Basemap(llcrnrlon=lng1, \
 			llcrnrlat=lat1, \
 			urcrnrlon=lng2, \
-			urcrnrlat=lat2,)
+			urcrnrlat=lat2, \
+			resolution='c')
 m.drawcoastlines()
+m.drawcountries()
+m.drawstates()
 a = np.random.random((d.shape[1], d.shape[2]))
 im = m.imshow(d[0, :, :], \
-			interpolation='None', \
+			interpolation='Nearest', \
 			animated=True, \
 			origin='lower', \
 			cmap='jet')
@@ -37,11 +41,11 @@ def animate(i):
     a = im.get_array()
     a = d[i, :, :]
     im.set_array(a)
-    plt.title('{0} days from the 250th day of 2007'.format(i/24))
+    plt.title('{0} days from the 250th day of 200{1}'.format(i/24, 6 + y))
     return [im]
 
 # Calculate the interval
-f = 30. # frames per second
+f = 24   # frames per second
 dt = 1.0 / f
 t0 = time()
 animate(0)
@@ -55,8 +59,10 @@ anim = animation.FuncAnimation(fig, animate, init_func=init, \
 								blit=False)
 if save:
 	print('saving animation...')
-	anim.save(dataFolder + 'mapMovie.mp4', fps=f, \
-				extra_args=['-vcodec', 'libx264'])
+	anim.save(dataFolder + 'mapMovie200{0}.avi'.format(6 + y), \
+		fps=f, \
+		bitrate=-1, \
+		extra_args=['-vcodec', 'libx264'])
 
 	print('done.')
 
