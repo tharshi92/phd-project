@@ -97,10 +97,10 @@ if field:
     metadatum.append(field_metadata)
 
 # describe the geometry of the area to analyze
-lngIndex1 = 0
-lngIndex2 = 36
-latIndex1 = 22
-latIndex2 = 45
+lngIndex1 = 8
+lngIndex2 = 26
+latIndex1 = 28
+latIndex2 = 39
 
 lons = np.arange(-180, 180, 5)
 tmp = np.arange(-86, 87, 4)
@@ -129,3 +129,6 @@ for yr in yrs:
 
 # create storage array
 rawData = np.zeros((n, latIndex2 - latIndex1, lngIndex2 - lngIndex1))
+
+print lons
+print lats
