@@ -1,12 +1,15 @@
 from config import *
 import numpy as np
+from time import time
 import matplotlib.pyplot as plt
 import matplotlib.animation as animation
 from mpl_toolkits.basemap import Basemap, cm
 
 # Import data
+start = 24 * (365 + 250 - 1)
+end = 24 * (365 + 300 - 1)
 dataFolder = homeDir + 'surfaceData/'
-d = np.load(dataFolder + 'COField.npy')
+d = np.load(dataFolder + 'COField.npy')[start:end, :, :]
 
 # First set up the figure, the axis, and the plot element we want to animate
 fig = plt.figure()
@@ -15,7 +18,7 @@ im = plt.imshow(d[0, :, :], \
 			interpolation='None', \
 			animated=True, \
 			origin='lower', \
-			cmap='inferno')
+			cmap='Greys')
 
 # Initialization Function: plot the background of each frame
 def init():
@@ -27,12 +30,25 @@ def animate(i):
     a = im.get_array()
     a = d[i, :, :]
     im.set_array(a)
+    plt.title('{0} days from the 250th day of 2007'.format(i/24))
     return [im]
+
+# Calculate the interval
+f = 30. # frames per second
+dt = 1.0 / f
+t0 = time()
+animate(0)
+t1 = time()
+interval = 1000 * dt - (t1 - t0)
+print(interval)
 
 # Call the animator
 anim = animation.FuncAnimation(fig, animate, init_func=init, \
 								frames=len(d), \
-								interval=1, \
+								interval=interval, \
 								blit=False)
+
+# anim.save(dataFolder + 'mapMovie.mp4', fps=f, \
+# 		extra_args=['-vcodec', 'libx264'])
 
 plt.show()
