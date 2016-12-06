@@ -15,7 +15,6 @@ for metadata in metadatum:
     print('Preparing ' + title + ' Data..')
     
     for i in range(d):
-        print(fnames[i])
         trFile = fnames[i]
         data = Dataset(trFile)
         
