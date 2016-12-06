@@ -4,54 +4,35 @@ import matplotlib.pyplot as plt
 import matplotlib.animation as animation
 from mpl_toolkits.basemap import Basemap, cm
 
-
-# I/O
+# Import data
 dataFolder = homeDir + 'surfaceData/'
-rawData = np.load(dataFolder + 'COField.npy')
+d = np.load(dataFolder + 'COField.npy')
 
-# Define Helper Functions
+# First set up the figure, the axis, and the plot element we want to animate
+fig = plt.figure()
+a = np.random.random((d.shape[1], d.shape[2]))
+im = plt.imshow(d[0, :, :], \
+			interpolation='None', \
+			animated=True, \
+			origin='lower', \
+			cmap='inferno')
 
-def generate_data():
+# Initialization Function: plot the background of each frame
+def init():
+    im.set_data(np.random.random((d.shape[1], d.shape[2])))
+    return [im]
 
+# Animation function (updates each frame)
+def animate(i):
+    a = im.get_array()
+    a = d[i, :, :]
+    im.set_array(a)
+    return [im]
 
-def update(data):
-	mat.set_data(data)
-	return mat
-	data = rawData[i, :, :]
-	plt.imshow(data, cmap='Blues', interpolation='None', vmin=0, vmax=400)
-	plt.title(str(i))
-
-def data_gen():
-	while True:
-		yield generate_data()
-
-
-fig, ax = plt.subplots()
-
-# m = Basemap(projection='mill', \
-# 			resolution='c', \
-# 			llcrnrlat=lats[lat_i], \
-# 			urcrnrlat=lats[lat_f], \
-#             llcrnrlon=lons[lon_i], \
-#             urcrnrlon=lons[lon_f])
-
-# m.drawcoastlines()
-# m.drawcountries()
-
-data = rawData[0, :, :]
-
-p = m.imshow(data, cmap='Blues', interpolation='None', vmin=0, vmax=400)
-cb = m.colorbar(p, "right", size="5%", pad='2%')
-
-
-anim = animation.FuncAnimation(fig, animate, np.arange(0, len(rawData)), interval=200)
-
-FFMpegWriter = animation.writers['ffmpeg']
-metadata = dict(title='Surface CO Field Data', \
-                artist='tsrikann@physics.utoronto.ca')
-writer = FFMpegWriter(fps=15, metadata=metadata)
-
-#anim.save(dataFolder + 'COFieldMovie.mp4', writer=writer)
+# Call the animator
+anim = animation.FuncAnimation(fig, animate, init_func=init, \
+								frames=len(d), \
+								interval=1, \
+								blit=False)
 
 plt.show()
-print('done.')
