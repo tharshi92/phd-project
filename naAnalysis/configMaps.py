@@ -4,13 +4,12 @@ import numpy as np
 import os.path
 
 runName = 'surfaceData'
-saveplot = 0
 
 # path information
 homeDir = os.path.expanduser("~") + '/'
 
 # check if folder exists and put files inside there
-saveDir = homeDir + 'phd-project/'  + 'naAnalysis/' + runName + '/'
+saveDir = homeDir + runName + '/'
 if not os.path.exists(saveDir):
     os.makedirs(saveDir)
 
