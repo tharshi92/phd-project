@@ -7,7 +7,7 @@ for metadata in metadatum:
     title = metadata[1]
     units = metadata[2]
     
-    ghost_file = saveFolder + title + '.npy'
+    ghost_file = saveDir + title + '.npy'
     if os.path.isfile(ghost_file):
         print(ghost_file + ' already exists!! Skipping to next data stream.')
         continue
@@ -32,7 +32,7 @@ for metadata in metadatum:
         
         data.close()
 
-    np.save(saveFolder + title, rawData)
+    np.save(saveDir + title, rawData)
     print('done.')
 
 
