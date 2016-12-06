@@ -40,15 +40,15 @@ t0 = time()
 animate(0)
 t1 = time()
 interval = 1000 * dt - (t1 - t0)
-print(interval)
 
 # Call the animator
 anim = animation.FuncAnimation(fig, animate, init_func=init, \
 								frames=len(d), \
 								interval=interval, \
 								blit=False)
+print('saving animation...')
+anim.save(dataFolder + 'mapMovie.mp4', fps=f, \
+		extra_args=['-vcodec', 'libx264'])
 
-# anim.save(dataFolder + 'mapMovie.mp4', fps=f, \
-# 		extra_args=['-vcodec', 'libx264'])
-
+print('done.')
 plt.show()
