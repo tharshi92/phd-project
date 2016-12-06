@@ -129,6 +129,3 @@ for yr in yrs:
 
 # create storage array
 rawData = np.zeros((n, latIndex2 - latIndex1, lngIndex2 - lngIndex1))
-
-print lons
-print lats
