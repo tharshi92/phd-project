@@ -115,8 +115,6 @@ lng2 = lons[lngIndex2]
 lat1 = lats[latIndex1]
 lat2 = lats[latIndex2]
 
-rawData = np.zeros((n, latIndex2 - latIndex1, lngIndex2 - lngIndex1))
-
 # total days, training days, and testing days
 numYears = len(yrs)
 d = 0
@@ -129,3 +127,6 @@ for yr in yrs:
     else:
         n += 366 * 24
         d += 366
+
+# create storage array
+rawData = np.zeros((n, latIndex2 - latIndex1, lngIndex2 - lngIndex1))
