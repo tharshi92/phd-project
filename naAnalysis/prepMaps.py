@@ -17,16 +17,18 @@ for metadata in metadatum:
     for i in range(d):
         print(fnames[i])
         trFile = fnames[i]
-        data = Dataset(trFile).variables[var_name]
+        data = Dataset(trFile)
         
         for j in range(24):
             
             idx = 24 * i + j
             
             if var_name == 'PBLDEPTH__PBL_M':
-                dataMap = data[j, latIndex1:latIndex2, lngIndex1:lngIndex2]
+                dataMap = data.variables[var_name]\
+                [j, latIndex1:latIndex2, lngIndex1:lngIndex2]
             else:
-                dataMap = data[j, 0, latIndex1:latIndex2, lngIndex1:lngIndex2]
+                dataMap = data.variables[var_name]\
+                [j, 0, latIndex1:latIndex2, lngIndex1:lngIndex2]
             
             rawData[idx, :, :] = dataMap
         
