@@ -8,7 +8,7 @@ from mpl_toolkits.basemap import Basemap
 save = 1#int(sys.argv[1])
 
 # Import data
-y = 5
+y = 1
 start = 24 * (365 * y + 250 - 1)
 end = 24 * (365 * y + 300 - 1)
 dataFolder = homeDir + 'surfaceData/'
@@ -59,7 +59,7 @@ anim = animation.FuncAnimation(fig, animate, init_func=init, \
 								blit=False)
 if save:
 	print('saving animation...')
-	anim.save(dataFolder + 'mapMovie200{0}.avi'.format(6 + y), \
+	anim.save(dataFolder + 'mapMovie200{0}.mp4'.format(6 + y), \
 		fps=f, \
 		bitrate=-1, \
 		extra_args=['-vcodec', 'libx264'])
