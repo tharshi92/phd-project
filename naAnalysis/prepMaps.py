@@ -26,8 +26,8 @@ for metadata in metadatum:
                 dataMap = data.variables[var_name]\
                 [j, latIndex1:latIndex2, lngIndex1:lngIndex2]
             else:
-                dataMap = data.variables[var_name]\
-                [j, 0, latIndex1:latIndex2, lngIndex1:lngIndex2]
+                dataMap = np.mean(data.variables[var_name]\
+                    [j, :18, latIndex1:latIndex2, lngIndex1:lngIndex2], axis=0)
             
             rawData[idx, :, :] = dataMap
         
