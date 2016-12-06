@@ -1,5 +1,5 @@
 from config import *
-import numpy as np
+from netCDF4 import Dataset
 
 dumpFolder = homeDir
 
