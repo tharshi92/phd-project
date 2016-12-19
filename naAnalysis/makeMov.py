@@ -41,7 +41,7 @@ def animate(i):
     a = im.get_array()
     a = d[i, :, :]
     im.set_array(a)
-    plt.title('{0} days from the 250th day of 200{1}'.format(i/24, 6 + y))
+    plt.title('{0} days from the 250th day of year {1}'.format(i/24, 6 + y))
     return [im]
 
 # Calculate the interval
