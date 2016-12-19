@@ -97,10 +97,10 @@ if field:
     metadatum.append(field_metadata)
 
 # describe the geometry of the area to analyze
-lngIndex1 = 8
-lngIndex2 = 26
-latIndex1 = 28
-latIndex2 = 39
+lngIndex1 = 16
+lngIndex2 = 23
+latIndex1 = 30
+latIndex2 = 35
 
 lons = np.arange(-180, 180, 5)
 tmp = np.arange(-86, 87, 4)
