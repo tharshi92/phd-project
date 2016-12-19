@@ -3,7 +3,7 @@ import sys
 import numpy as np
 import os.path
 
-runName = 'surfaceData'
+runName = 'movData'
 
 # path information
 homeDir = os.path.expanduser("~") + '/'

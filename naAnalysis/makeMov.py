@@ -5,13 +5,13 @@ import matplotlib.pyplot as plt
 import matplotlib.animation as animation
 from mpl_toolkits.basemap import Basemap
 
-save = 1#int(sys.argv[1])
+save = 1
 
 # Import data
-y = 1
+y = int(sys.argv[1])
 start = 24 * (365 * y + 250 - 1)
 end = 24 * (365 * y + 300 - 1)
-dataFolder = homeDir + 'surfaceData/'
+dataFolder = homeDir + 'movData/'
 d = np.load(dataFolder + 'COField.npy')[start:end, :, :]
 
 # First set up the figure, the axis, and the plot element we want to animate
