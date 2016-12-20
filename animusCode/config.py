@@ -97,23 +97,12 @@ if pbl:
 if field:
     metadatum.append(field_metadata)
 
-# describe the geometry of the area to analyze
-lngIndex1 = 51
-lngIndex2 = 52
-latIndex1 = 29
-latIndex2 = 30
-
 lons = np.arange(-180, 180, 5)
 tmp = np.arange(-86, 87, 4)
 tmp2 = np.append(tmp, 89)
 lats = np.insert(tmp2, 0, -89)
 
 del tmp, tmp2
-
-lng1 = lons[lngIndex1]
-lng2 = lons[lngIndex2]
-lat1 = lats[latIndex1]
-lat2 = lats[latIndex2]
 
 # total days, training days, and testing days
 numYears = len(yrs)
