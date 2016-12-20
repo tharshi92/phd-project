@@ -17,12 +17,13 @@ if not os.path.exists(saveDir):
 dataDir = '/users/jk/13/dbj/NN_CO/run.v8-02-01.G5_tagco_new_3Dchem/timeseries2/'
 emDir = '/users/jk/13/dbj/NN_CO/'
 yrs= ['2006', '2007', '2008', '2009', '2010', '2011']
-testingYear = 2007
 mnths = ['0' + str(i) for i in range(1, 10)] + [str(i) for i in range(10, 13)]
 days = ['0' + str(i) for i in range(1, 10)] + [str(i) for i in range(10, 32)]
+dates = []
 emNames = []
 fnames = []
 tmp = []
+tmp2 = []
 prefix = 'v8.G5_4x5_tagCO_ts.'
 suffix = '_new.nc'
 
@@ -33,20 +34,30 @@ for y in yrs:
     for m in mnths:
         for d in days:
             fnames.append(dataDir + prefix + '{0}{1}{2}'.format(y, m, d) + suffix)
+            dates.append('{0}{1}{2}'.format(m, d, y))
     
     for d in range(29, 32):
         if y != '2008':
             tmp.append(dataDir + prefix + '{0}02{1}'.format(y, d) + suffix)
+            tmp2.append('02{0}{1}'.format(d, y))
+
 
     for d in range(30, 32):
         if y == '2008':
             tmp.append(dataDir + prefix + '200802{0}'.format(d) + suffix)
+            tmp2.append('02{0}2008'.format(d))
 
     for m in ['04', '06', '09', '11']:
         tmp.append(dataDir + prefix + '{0}{1}{2}'.format(y, m, '31') + suffix)
+        tmp2.append('{0}31{1}'.format(m, y))
 
 for t in tmp:
     fnames.remove(t)
+
+for t2 in tmp2:
+    dates.remove(t2)
+
+del tmp, tmp2
 
 # control what data is let into the network
 field = 1
@@ -87,10 +98,22 @@ if field:
     metadatum.append(field_metadata)
 
 # describe the geometry of the area to analyze
-lon_i = 20
-lon_f = 21
-lat_i = 32
-lat_f = 33
+lngIndex1 = 51
+lngIndex2 = 52
+latIndex1 = 29
+latIndex2 = 30
+
+lons = np.arange(-180, 180, 5)
+tmp = np.arange(-86, 87, 4)
+tmp2 = np.append(tmp, 89)
+lats = np.insert(tmp2, 0, -89)
+
+del tmp, tmp2
+
+lng1 = lons[lngIndex1]
+lng2 = lons[lngIndex2]
+lat1 = lats[latIndex1]
+lat2 = lats[latIndex2]
 
 # total days, training days, and testing days
 numYears = len(yrs)
@@ -105,4 +128,7 @@ for yr in yrs:
         n += 366 * 24
         d += 366
 
+# create storage array
+#rawData = np.zeros((n, latIndex2 - latIndex1, lngIndex2 - lngIndex1))
 rawData = np.zeros((n, 1))
+
