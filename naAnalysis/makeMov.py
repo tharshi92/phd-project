@@ -5,14 +5,19 @@ import matplotlib.pyplot as plt
 import matplotlib.animation as animation
 from mpl_toolkits.basemap import Basemap
 
-save = 1
+save = int(sys.argv[1])
 
 # Import data
-y = int(sys.argv[1])
+y = int(sys.argv[2])
 start = 24 * (365 * y + 250 - 1)
 end = 24 * (365 * y + 300 - 1)
 dataFolder = homeDir + 'movData/'
 d = np.load(dataFolder + 'COField.npy')[start:end, :, :]
+m = np.mean(d)
+s = np.std(d)
+reach = 3
+vmin = np.round(m - (reach - 1) * s)
+vmax = np.round(m + (reach + 1) * s)
 
 # First set up the figure, the axis, and the plot element we want to animate
 fig = plt.figure()
@@ -29,7 +34,8 @@ im = m.imshow(d[0, :, :], \
 			interpolation='Nearest', \
 			animated=True, \
 			origin='lower', \
-			cmap='jet')
+			cmap='Greys', vmin=vmin, vmax=vmax)
+plt.colorbar(orientation='horizontal')
 
 # Initialization Function: plot the background of each frame
 def init():
@@ -59,11 +65,12 @@ anim = animation.FuncAnimation(fig, animate, init_func=init, \
 								blit=False)
 if save:
 	print('saving animation...')
-	anim.save(dataFolder + 'mapMovie200{0}.mp4'.format(6 + y), \
+	anim.save(dataFolder + '{0}.mp4'.format(6 + y), \
 		fps=f, \
 		bitrate=-1, \
 		extra_args=['-vcodec', 'libx264'])
 
 	print('done.')
 
-plt.show()
+if not save:
+	plt.show()
