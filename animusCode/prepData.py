@@ -34,10 +34,10 @@ for metadata in metadatum:
             
             if var_name == 'PBLDEPTH__PBL_M':
                 dataMap = data.variables[var_name]\
-                    [j, lat_i:lat_f, lon_i:lon_f]
+                    [j, latIndex1:latIndex2, lngIndex1:lngIndex2]
             else:
                 dataMap = np.mean(data.variables[var_name]\
-                    [j, :levels, lat_i:lat_f, lon_i:lon_f], axis=0) 
+                    [j, :levels, latIndex1:latIndex2, lngIndex1:lngIndex2, axis=0) 
                 
             mapMean = np.mean(dataMap, dtype=np.float64)
             
