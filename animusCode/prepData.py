@@ -37,7 +37,7 @@ for metadata in metadatum:
                     [j, latIndex1:latIndex2, lngIndex1:lngIndex2]
             else:
                 dataMap = np.mean(data.variables[var_name]\
-                    [j, :levels, latIndex1:latIndex2, lngIndex1:lngIndex2, axis=0) 
+                    [j, :levels, latIndex1:latIndex2, lngIndex1:lngIndex2], axis=0) 
                 
             mapMean = np.mean(dataMap, dtype=np.float64)
             
