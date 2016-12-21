@@ -12,7 +12,7 @@ os.chdir(dumpFolder)
 
 for metadata in metadatum:
 
-    M = np.zeros((n, 46, 72, 29))
+    M = np.zeros((d, 24, 29, 46, 72))
     
     var_name = metadata[0]
     title = metadata[1]
@@ -29,18 +29,12 @@ for metadata in metadatum:
         
         trFile = fnames[i]
         data = Dataset(trFile)
-        
-        for j in range(24):
             
-            idx = 24 * i + j
+        if var_name == 'PBLDEPTH__PBL_M':
+            M = data.variables[var_name][i, :, :, :, :]
+        else:
+            M = data.variables[var_name][i, :, :, :, :]
             
-            if var_name == 'PBLDEPTH__PBL_M':
-                dataMap = data.variables[var_name][j]
-            else:
-                dataMap = data.variables[var_name][j]
-            
-            M[idx, :, :, :] = dataMap
-        
         data.close()
 
     np.save(dumpFolder + title, M)
