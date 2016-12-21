@@ -46,7 +46,7 @@ for i in range(numYears):
     for k in range(12):
        start = count[k + 12 * i]
        end = count[k + 1 + 12 * i] 
-       M[start:end, :, :] = np.ones(((end - start), 1)) * emData[k]
+       M[start:end, :, :] = np.ones(((end - start), 46, 72)) * emData[k]
 
     data.close()
         
