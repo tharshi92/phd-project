@@ -3,8 +3,10 @@ import sys
 
 # Name the data folder
 folderName = sys.argv[1]
+
 # How many levels to average over
 levels = int(sys.argv[2])
+
 # Describe the geometry of the area to analyze
 lngIndex1 = int(sys.argv[3])
 lngIndex2 = int(sys.argv[4])
