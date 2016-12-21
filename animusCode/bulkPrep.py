@@ -2,7 +2,7 @@ from config import *
 import sys
 
 # Name the data folder
-folderName = geosChem4x5
+folderName = 'geosChem4x5'
 
 dumpFolder = homeDir + folderName + '/'
 if not os.path.exists(dumpFolder):
