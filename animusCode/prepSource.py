@@ -1,7 +1,14 @@
 from config import *
 import sys
 
+# Name the data folder
 folderName = sys.argv[1]
+# Describe the geometry of the area to analyze
+lngIndex1 = sys.argv[2]
+lngIndex2 = sys.argv[3]
+latIndex1 = sys.argv[4]
+latIndex2 = sys.argv[5]
+
 dumpFolder = homeDir + folderName + '/'
 if not os.path.exists(dumpFolder):
     os.makedirs(dumpFolder)
