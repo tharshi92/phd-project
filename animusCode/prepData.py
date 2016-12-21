@@ -6,10 +6,10 @@ folderName = sys.argv[1]
 # How many levels to average over
 levels = int(sys.argv[2])
 # Describe the geometry of the area to analyze
-lngIndex1 = sys.argv[3]
-lngIndex2 = sys.argv[4]
-latIndex1 = sys.argv[5]
-latIndex2 = sys.argv[6]
+lngIndex1 = int(sys.argv[3])
+lngIndex2 = int(sys.argv[4])
+latIndex1 = int(sys.argv[5])
+latIndex2 = int(sys.argv[6])
 
 dumpFolder = homeDir + folderName + '/'
 if not os.path.exists(dumpFolder):
