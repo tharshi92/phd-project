@@ -108,8 +108,6 @@ tmp = np.arange(-86, 87, 4)
 tmp2 = np.append(tmp, 89)
 lats = np.insert(tmp2, 0, -89)
 
-del tmp, tmp2
-
 # total days, training days, and testing days
 numYears = len(yrs)
 d = 0
