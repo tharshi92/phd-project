@@ -1,7 +1,7 @@
 
 # coding: utf-8
 
-# In[1]:
+# In[2]:
 
 # Import modules
 import numpy as np
@@ -22,7 +22,7 @@ cwd = os.getcwd()
 sess = tf.InteractiveSession()
 
 
-# In[2]:
+# In[3]:
 
 local_repo = home_dir + "18level" + '/'
 
@@ -40,46 +40,96 @@ n_features = len(x.T)
 n_targets = len(y.T)
 
 
-# In[15]:
+# In[9]:
+
+# Create helper functions to build network
+
+def weights(size, n):
+    """Creates a weight tensor."""
+    return tf.Variable(tf.random_normal(size, stddev=1.0/size[0]), name='W' + str(n))
+
+def bias(size, n):
+    """Creates a bias tensor"""
+    return tf.Variable(tf.random_normal(size), name='b' + str(n))
+
+def relu(s):
+    """A lazy wrapper for the reulo function
+    in tensorflow."""
+    return tf.nn.relu(s)
+
+def ff_layer(s, size, n, linear=False):
+    """Take a signal s and return the activations of that layer."""
+    w = weights(size, n)
+    b = bias([size[0]], n)
+    if linear == False:
+        return relu(tf.matmul(s, w) + b)
+    else:
+        return tf.matmul(s, w) + b
+
+
+# In[10]:
 
 # Create placeholders for the input 
 # and the target
 v = tf.placeholder(tf.float32, shape=[None, n_features])
 z_ = tf.placeholder(tf.float32, shape=[None, n_targets])
 
-# Variables in our model (weights and biases)
-W1 = tf.Variable(tf.random_normal([n_features, 10]))
-b1 = tf.Variable(tf.random_normal([10]))
 
-W2 = tf.Variable(tf.random_normal([10, n_targets]))
-b2 = tf.Variable(tf.random_normal([n_targets]))
+# In[11]:
 
 # Initialize all tf variables
 sess.run(tf.global_variables_initializer())
 
 # This is our regression model
-tmp = tf.nn.relu(tf.matmul(v, W1) + b1)
-z = tf.matmul(tmp, W2) + b2
+a1 = ff_layer(v, [n_features, 5], 1)
+a2 = ff_layer(tmp, [5, 3], 2)
+z = ff_layer(a2, [3, n_targets], 3, linear=True)
 
 # Define a loss function
 loss = tf.reduce_mean(tf.nn.l2_loss(z - z_))
 
 
-# In[23]:
+# In[5]:
 
 z1 = z.eval(feed_dict={v: x_t})
-plt.plot(scale_params[2] * y_t)
+plt.figure(figsize=(18, 10))
+plt.plot(y_t, label='Test')
+plt.plot(z1, label='Net')
+plt.legend()
 
 
-# In[ ]:
+# In[6]:
 
 # Train the model using gradient descent with a step size of 0.5
-train_step = tf.train.GradientDescentOptimizer(1e-4).minimize(loss)
+train_step = tf.train.GradientDescentOptimizer(1e-2).minimize(loss)
 
 # Run training step multiple times to reduce loss
-for i in range(int(2e3)):
-    batch = mnist.train.next_batch(100)
-    train_step.run(feed_dict={x: batch[0], y_:batch[1]})
+for i in range(len(x)):
+    train_step.run(feed_dict={v: x[i, :].reshape((1, 8)), z_: y[i, :].reshape((1, 1))})
+
+
+# In[7]:
+
+z2 = z.eval(feed_dict={v: x_t})
+plt.figure(figsize=(18, 10))
+plt.plot(y_t, label='Test')
+plt.plot(z2, label='Net')
+plt.legend()
+
+
+# In[8]:
+
+e1 = loss.eval(feed_dict={v: x, z_: y})
+
+
+# In[9]:
+
+e2 = loss.eval(feed_dict={v: x_t, z_: y_t})
+
+
+# In[10]:
+
+print e1, e2
 
 
 # In[ ]:
