@@ -25,7 +25,8 @@ run_name = strftime("%m%d%Yrun", gmtime())
 # Check if the save folder 
 # exists. If not, then generate
 # the folder to store files
-save_dir = home_dir + 'phd-project/'  + run_name + '/'
+save_dir = home_dir + 'phd-project/'  \
+    + run_name + '/'
 if not os.path.exists(save_dir):
     os.makedirs(save_dir)
 
