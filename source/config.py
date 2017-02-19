@@ -118,14 +118,22 @@ humidity = 1
 pbl = 1
 
 # Metadata Lists
-uwind_metadata = ['DAO_3D_S__UWND', 'Uwind', 'm/s']
-vwind_metadata = ['DAO_3D_S__VWND', 'Vwind', 'm/s']
-pressure_metadata = ['PEDGE_S__PEDGE', 'Pressure', 'hPa']
-temp_metadata = ['DAO_3D_S__TMPU', 'Temperature', 'K']
-humidity_metadata = ['TIME_SER__RH', 'Humidity', '%']
-pbl_metadata = ['PBLDEPTH__PBL_M', 'PBL', 'm']
-source_metadata = ['CO__SRCE__COanth', 'COSource', 'kg']
-field_metadata = ['IJ_AVG_S__CO', 'COField', 'ppbv']
+uwind_metadata = ['DAO_3D_S__UWND', \
+    'Uwind', 'm/s']
+vwind_metadata = ['DAO_3D_S__VWND', \
+    'Vwind', 'm/s']
+pressure_metadata = ['PEDGE_S__PEDGE', \
+    'Pressure', 'hPa']
+temp_metadata = ['DAO_3D_S__TMPU', \
+    'Temperature', 'K']
+humidity_metadata = ['TIME_SER__RH', \
+    'Humidity', '%']
+pbl_metadata = ['PBLDEPTH__PBL_M', \
+    'PBL', 'm']
+source_metadata = ['CO__SRCE__COanth', \
+    'COSource', 'kg']
+field_metadata = ['IJ_AVG_S__CO', \
+    'COField', 'ppbv']
 
 # Construct metadatum list
 metadatum = []
