@@ -30,7 +30,7 @@ save_dir = home_dir + 'phd-project/'  \
 if not os.path.exists(save_dir):
     os.makedirs(save_dir)
 
-# The directory of raw data.
+# The directories of raw data.
 # Located on animus server
 animus_dir = "/users/jk/13/dbj/NN_CO/"
 data_subfolder = "run.v8-02-01.G5_tagco_new_3Dchem/timeseries2/"
