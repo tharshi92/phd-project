@@ -17,9 +17,6 @@ get_ipython().magic(u'matplotlib inline')
 
 from config import *
 
-# Start an interactive session
-sess = tf.InteractiveSession()
-
 
 # In[2]:
 
@@ -40,6 +37,9 @@ n_targets = len(y.T)
 
 
 # In[3]:
+
+# Start an interactive session
+sess = tf.InteractiveSession()
 
 # Create placeholders for the input 
 # and the target
@@ -143,6 +143,31 @@ plt.plot(y_t, label='Test')
 plt.plot(z1, label='Net')
 plt.legend()
 plt.savefig(save_dir + '/fit1.png')
+
+
+# In[5]:
+
+from scipy.signal import savgol_filter as sf
+
+y_smooth = sf(y_t[:, 0], 13, 12)
+plt.figure(figsize=(20, 10))
+plt.plot(y_t[:, 0])
+plt.plot(y_smooth)
+plt.plot(y_t[:, 0] - y_smooth + 1)
+
+
+# In[33]:
+
+s = scale_params[2]*y_t[:, 0]
+l = len(s)
+        
+first_diff = s[1:l] - s[0:l-1]
+
+
+# In[29]:
+
+plt.figure()
+plt.plot(first_diff)
 
 
 # In[ ]:
